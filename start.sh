@@ -64,7 +64,23 @@ echo "   Admin:    admin@knowledgenest.com / admin123"
 echo "   Student:  jane@example.com / jane123"
 echo "   Instructor: john@example.com / john123"
 echo ""
+echo "🌐 Opening KnowledgeNest in your default browser..."
 echo "Press Ctrl+C to stop all servers"
+
+# Wait a moment for servers to fully start, then open browser
+sleep 3
+if command -v open >/dev/null 2>&1; then
+    # macOS
+    open http://localhost:8080
+elif command -v xdg-open >/dev/null 2>&1; then
+    # Linux
+    xdg-open http://localhost:8080
+elif command -v start >/dev/null 2>&1; then
+    # Windows
+    start http://localhost:8080
+else
+    echo "Please open http://localhost:8080 in your browser"
+fi
 
 # Function to cleanup on exit
 cleanup() {
