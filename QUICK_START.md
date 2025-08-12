@@ -66,8 +66,15 @@ cd ..
 ```
 
 ### Step 6: Access the Application
-- **Frontend:** http://localhost:8080
-- **Backend API:** http://localhost:5000
+
+**Main Application URLs:**
+- **Home**: http://localhost:8080/home.html
+- **Login**: http://localhost:8080/login.html
+- **Register**: http://localhost:8080/register.html
+- **Dashboard**: http://localhost:8080/dashboard.html
+
+**API Base URL:**
+- **Backend API**: http://localhost:5001/api
 
 ### Default Admin Login
 - **Email:** admin@knowledgenest.com

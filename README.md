@@ -104,7 +104,7 @@ A comprehensive learning management system built with Python Flask backend and H
    ```bash
    python app.py
    ```
-   The API will be available at `http://localhost:5000`
+   The API will be available at `http://localhost:5001`
 
 ### Frontend Setup
 
@@ -129,6 +129,27 @@ A comprehensive learning management system built with Python Flask backend and H
 
 3. **Access the application**
    Open your browser and go to `http://localhost:8080`
+
+## Application URLs
+
+Once both servers are running, you can access:
+
+### **Frontend Pages:**
+- **Home Page**: http://localhost:8080/home.html
+- **Login Page**: http://localhost:8080/login.html
+- **Register Page**: http://localhost:8080/register.html
+- **Dashboard (Admin)**: http://localhost:8080/dashboard.html
+- **Profile Page**: http://localhost:8080/profile.html
+- **Courses Page**: http://localhost:8080/courses.html
+- **About Page**: http://localhost:8080/about.html
+- **Contact Page**: http://localhost:8080/contact.html
+
+### **Backend API Endpoints:**
+- **Base URL**: http://localhost:5001/api
+- **Login**: http://localhost:5001/api/login
+- **Register**: http://localhost:5001/api/register
+- **Courses**: http://localhost:5001/api/courses
+- **Profile**: http://localhost:5001/api/profile
 
 ## Database Schema
 

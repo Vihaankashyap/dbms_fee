@@ -19,7 +19,7 @@ app.config.from_object(config[config_name])
 # Initialize extensions
 db = SQLAlchemy(app)
 
-# Configure CORS with specific settings
+# Configure CORS with specific settings for frontend-backend separation
 CORS(app, resources={
     r"/api/*": {
         "origins": ["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:3000"],

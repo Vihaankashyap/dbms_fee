@@ -25,7 +25,7 @@ echo -n "🐍 Backend (Port 5001): "
 if lsof -Pi :5001 -sTCP:LISTEN -t >/dev/null; then
     echo -e "${GREEN}Running${NC}"
     # Test API endpoint
-    if curl -s http://localhost:5001/api/health >/dev/null 2>&1; then
+    if curl -s http://localhost:5001/api/courses >/dev/null 2>&1; then
         echo "   ✅ API responding"
     else
         echo -e "   ${YELLOW}⚠️  API not responding${NC}"
@@ -62,6 +62,13 @@ echo "   Stop everything: Ctrl+C in terminal running start.sh"
 echo "   View logs: Check terminal output"
 echo ""
 echo "🌐 Application URLs:"
-echo "   Frontend: http://localhost:8080"
-echo "   Backend:  http://localhost:5001"
+echo "   Home:     http://localhost:8080/home.html"
+echo "   Login:    http://localhost:8080/login.html"
+echo "   Register: http://localhost:8080/register.html"
+echo "   Dashboard: http://localhost:8080/dashboard.html"
+echo "   Backend:  http://localhost:5001/api"
+echo ""
+echo "🔑 Login Credentials:"
 echo "   Admin:    admin@knowledgenest.com / admin123"
+echo "   Student:  jane@example.com / jane123"
+echo "   Instructor: john@example.com / john123"

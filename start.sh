@@ -32,7 +32,7 @@ if [ ! -f ".requirements_installed" ]; then
     touch .requirements_installed
 fi
 
-# Start Flask app in background
+# Start Flask backend server in background
 python app.py &
 BACKEND_PID=$!
 
@@ -50,12 +50,19 @@ echo "Frontend server started with PID: $FRONTEND_PID"
 
 echo ""
 echo "🚀 KnowledgeNest is now running!"
-echo "📱 Frontend: http://localhost:8080"
-echo "🔧 Backend API: http://localhost:5000"
 echo ""
-echo "Default admin login:"
-echo "Email: admin@knowledgenest.com"
-echo "Password: admin123"
+echo "📱 Frontend URLs:"
+echo "   Home:     http://localhost:8080/home.html"
+echo "   Login:    http://localhost:8080/login.html"
+echo "   Register: http://localhost:8080/register.html"
+echo "   Dashboard: http://localhost:8080/dashboard.html"
+echo ""
+echo "🔧 Backend API: http://localhost:5001/api"
+echo ""
+echo "🔑 Login Credentials:"
+echo "   Admin:    admin@knowledgenest.com / admin123"
+echo "   Student:  jane@example.com / jane123"
+echo "   Instructor: john@example.com / john123"
 echo ""
 echo "Press Ctrl+C to stop all servers"
 
