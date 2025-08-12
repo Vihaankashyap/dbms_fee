@@ -73,19 +73,19 @@
 
 <section class="form-container">
 
-   <form action="" method="post" enctype="multipart/form-data">
+   <form id="registerForm">
       <h3>register now</h3>
       <p>your name <span>*</span></p>
-      <input type="text" name="name" placeholder="enter your name" required maxlength="50" class="box">
+      <input type="text" id="name" name="name" placeholder="enter your name" required maxlength="50" class="box">
       <p>your email <span>*</span></p>
-      <input type="email" name="email" placeholder="enter your email" required maxlength="50" class="box">
+      <input type="email" id="email" name="email" placeholder="enter your email" required maxlength="50" class="box">
       <p>your password <span>*</span></p>
-      <input type="password" name="pass" placeholder="enter your password" required maxlength="20" class="box">
+      <input type="password" id="password" name="password" placeholder="enter your password" required maxlength="20" class="box">
       <p>confirm password <span>*</span></p>
-      <input type="password" name="c_pass" placeholder="confirm your password" required maxlength="20" class="box">
-      <p>select profile <span>*</span></p>
-      <input type="file" accept="image/*" required class="box">
-      <input type="submit" value="register new" name="submit" class="btn">
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm your password" required maxlength="20" class="box">
+      <p>select profile (optional)</p>
+      <input type="file" id="profileImage" accept="image/*" class="box">
+      <input type="submit" value="register now" class="btn">
    </form>
 
 </section>
@@ -110,7 +110,64 @@
 
 </footer>
 
+<!-- API and custom js file links -->
+<script src="api.js"></script>
 <script src="script.js"></script>
+
+<script>
+// Register form handling
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const profileImage = document.getElementById('profileImage').files[0];
+    
+    // Validate passwords match
+    if (password !== confirmPassword) {
+        UIHelpers.showMessage('Passwords do not match', 'error');
+        return;
+    }
+    
+    try {
+        UIHelpers.showLoading(true);
+        
+        // Register user
+        const response = await api.register({ name, email, password });
+        
+        UIHelpers.saveUserData(response.user);
+        
+        // Upload profile image if provided
+        if (profileImage) {
+            try {
+                await api.uploadProfileImage(profileImage);
+                UIHelpers.showMessage('Registration successful with profile image!', 'success');
+            } catch (error) {
+                UIHelpers.showMessage('Registration successful, but profile image upload failed', 'warning');
+            }
+        } else {
+            UIHelpers.showMessage('Registration successful!', 'success');
+        }
+        
+        // Redirect to home page
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 1000);
+        
+    } catch (error) {
+        UIHelpers.showMessage(error.message || 'Registration failed', 'error');
+    } finally {
+        UIHelpers.showLoading(false);
+    }
+});
+
+// Check if already logged in
+if (UIHelpers.isLoggedIn()) {
+    window.location.href = 'home.html';
+}
+</script>
 
    
 </body>

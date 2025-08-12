@@ -79,9 +79,9 @@
    <div class="info">
 
       <div class="user">
-         <img src="images/pic-1.jpg" alt="">
-         <h3>VIHAAN</h3>
-         <p>student</p>
+         <img id="profileImage" src="images/pic-1.jpg" alt="">
+         <h3 id="userName">Loading...</h3>
+         <p id="userRole">Loading...</p>
          <a href="update.html" class="inline-btn">update profile</a>
       </div>
    
@@ -89,37 +89,45 @@
    
          <div class="box">
             <div class="flex">
-               <i class="fas fa-bookmark"></i>
+               <i class="fas fa-graduation-cap"></i>
                <div>
-                  <span>4</span>
-                  <p>saved playlist</p>
+                  <span id="totalCourses">0</span>
+                  <p>enrolled courses</p>
                </div>
             </div>
-            <a href="test.html" class="inline-btn">view playlists</a> <!--playlist-->> 
+            <a href="#" class="inline-btn" onclick="showMyCourses()">view courses</a>
          </div>
    
          <div class="box">
             <div class="flex">
-               <i class="fas fa-heart"></i>
+               <i class="fas fa-certificate"></i>
                <div>
-                  <span>33</span>
-                  <p>videos liked</p>
+                  <span id="completedCourses">0</span>
+                  <p>completed courses</p>
                </div>
             </div>
-            <a href="test.html" class="inline-btn">view liked</a> <!--playlist-->> 
+            <a href="#" class="inline-btn" onclick="showCompletedCourses()">view certificates</a>
          </div>
    
          <div class="box">
             <div class="flex">
-               <i class="fas fa-comment"></i>
+               <i class="fas fa-calendar"></i>
                <div>
-                  <span>12</span>
-                  <p>videos comments</p>
+                  <span id="memberSince">Loading...</span>
+                  <p>member since</p>
                </div>
             </div>
-            <a href="test.html" class="inline-btn">view comments</a> <!-- comments -->
+            <a href="#" class="inline-btn" onclick="showActivity()">view activity</a>
          </div>
    
+      </div>
+   </div>
+
+   <!-- My Courses Section -->
+   <div id="myCoursesSection" style="display: none; margin-top: 2rem;">
+      <h2 class="heading">My Enrolled Courses</h2>
+      <div id="coursesList" class="courses-container">
+         <!-- Courses will be loaded here -->
       </div>
    </div>
 
@@ -131,8 +139,172 @@
 
 </footer>
 
-<!-- custom js file link  -->
+<!-- API and custom js file links -->
+<script src="api.js"></script>
 <script src="script.js"></script>
+
+<script>
+let userProfile = null;
+let userCourses = [];
+
+// Load user profile on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check if user is logged in
+    if (!UIHelpers.isLoggedIn()) {
+        UIHelpers.redirectToLogin();
+        return;
+    }
+
+    try {
+        UIHelpers.showLoading(true);
+        
+        // Load user profile
+        userProfile = await api.getProfile();
+        displayProfile(userProfile);
+        
+        // Load user's courses
+        const coursesResponse = await api.getMyCourses();
+        userCourses = coursesResponse.courses;
+        
+    } catch (error) {
+        UIHelpers.showMessage('Failed to load profile: ' + error.message, 'error');
+        if (error.message.includes('Unauthorized') || error.message.includes('token')) {
+            UIHelpers.redirectToLogin();
+        }
+    } finally {
+        UIHelpers.showLoading(false);
+    }
+});
+
+function displayProfile(profile) {
+    // Update profile information
+    document.getElementById('userName').textContent = profile.name;
+    document.getElementById('userRole').textContent = profile.role;
+    
+    // Update profile image
+    const profileImg = document.getElementById('profileImage');
+    if (profile.profile_image && profile.profile_image !== 'default.jpg') {
+        profileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+    }
+    
+    // Update statistics
+    document.getElementById('totalCourses').textContent = profile.total_courses || 0;
+    document.getElementById('completedCourses').textContent = profile.completed_courses || 0;
+    
+    // Format member since date
+    const memberSince = new Date(profile.created_at);
+    document.getElementById('memberSince').textContent = memberSince.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short' 
+    });
+    
+    // Update header profile info
+    const headerProfileName = document.querySelector('.header .profile .name');
+    const headerProfileRole = document.querySelector('.header .profile .role');
+    const headerProfileImg = document.querySelector('.header .profile .image');
+    const sidebarProfileName = document.querySelector('.side-bar .profile .name');
+    const sidebarProfileRole = document.querySelector('.side-bar .profile .role');
+    const sidebarProfileImg = document.querySelector('.side-bar .profile .image');
+    
+    if (headerProfileName) headerProfileName.textContent = profile.name;
+    if (headerProfileRole) headerProfileRole.textContent = profile.role;
+    if (sidebarProfileName) sidebarProfileName.textContent = profile.name;
+    if (sidebarProfileRole) sidebarProfileRole.textContent = profile.role;
+    
+    if (headerProfileImg && profile.profile_image !== 'default.jpg') {
+        headerProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+    }
+    if (sidebarProfileImg && profile.profile_image !== 'default.jpg') {
+        sidebarProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+    }
+}
+
+function showMyCourses() {
+    const section = document.getElementById('myCoursesSection');
+    const coursesList = document.getElementById('coursesList');
+    
+    if (section.style.display === 'none') {
+        section.style.display = 'block';
+        
+        // Display courses
+        if (userCourses.length === 0) {
+            coursesList.innerHTML = '<p>No courses enrolled yet. <a href="courses.html">Browse courses</a></p>';
+        } else {
+            coursesList.innerHTML = userCourses.map(course => `
+                <div class="course-card" style="border: 1px solid #ddd; padding: 1rem; margin: 1rem 0; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img src="${course.thumbnail ? `http://localhost:5001/uploads/${course.thumbnail}` : 'images/thumb-1.png'}" 
+                             alt="${course.title}" 
+                             style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">
+                        <div style="flex: 1;">
+                            <h4>${course.title}</h4>
+                            <p style="color: #666; margin: 0.5rem 0;">Category: ${course.category}</p>
+                            <p style="color: #666; margin: 0.5rem 0;">Instructor: ${course.instructor_name}</p>
+                            ${course.enrollment ? `
+                                <div style="margin-top: 0.5rem;">
+                                    <div style="background: #f0f0f0; border-radius: 10px; height: 8px; overflow: hidden;">
+                                        <div style="background: #4CAF50; height: 100%; width: ${course.enrollment.progress_percentage}%;"></div>
+                                    </div>
+                                    <small>Progress: ${Math.round(course.enrollment.progress_percentage)}%</small>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div>
+                            ${course.enrollment && course.enrollment.completed_at ? 
+                                '<span style="color: #4CAF50; font-weight: bold;">✓ Completed</span>' : 
+                                '<a href="#" class="inline-btn">Continue</a>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } else {
+        section.style.display = 'none';
+    }
+}
+
+function showCompletedCourses() {
+    const completedCourses = userCourses.filter(course => 
+        course.enrollment && course.enrollment.completed_at
+    );
+    
+    if (completedCourses.length === 0) {
+        UIHelpers.showMessage('No completed courses yet. Keep learning!', 'info');
+    } else {
+        UIHelpers.showMessage(`You have completed ${completedCourses.length} courses!`, 'success');
+        showMyCourses(); // Show courses section
+    }
+}
+
+function showActivity() {
+    UIHelpers.showMessage('Activity tracking feature coming soon!', 'info');
+}
+
+// Add logout functionality
+function logout() {
+    api.logout();
+    UIHelpers.showMessage('Logged out successfully', 'success');
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 1000);
+}
+
+// Add logout button to profile if it doesn't exist
+document.addEventListener('DOMContentLoaded', () => {
+    const profileSection = document.querySelector('.user-profile .user');
+    if (profileSection && !document.getElementById('logoutBtn')) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.id = 'logoutBtn';
+        logoutBtn.className = 'inline-btn';
+        logoutBtn.textContent = 'Logout';
+        logoutBtn.style.marginTop = '1rem';
+        logoutBtn.style.backgroundColor = '#e74c3c';
+        logoutBtn.onclick = logout;
+        profileSection.appendChild(logoutBtn);
+    }
+});
+</script>
 
    
 </body>

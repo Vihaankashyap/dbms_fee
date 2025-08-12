@@ -1,310 +1,304 @@
-# KnowledgeNest - Advanced Learning Management System
+# KnowledgeNest Learning Platform
 
-## 🎓 Overview
+A comprehensive learning management system built with Python Flask backend and HTML/CSS/JavaScript frontend, integrated with MySQL database.
 
-KnowledgeNest is a comprehensive Learning Management System (LMS) built with modern web technologies and advanced SQL database management. This project transforms a simple frontend learning platform into a sophisticated, data-driven application with real-time analytics, user management, and comprehensive course tracking.
+## Features
 
-## 🚀 Features
+### Student Features
+- User registration and authentication
+- Course browsing and enrollment
+- Profile management with image upload
+- Progress tracking
+- Course completion certificates
 
-### 🔐 Advanced Authentication & Authorization
-- JWT-based authentication with session management
-- Role-based access control (Admin, Instructor, Student)
-- Password hashing with bcrypt
-- Session tracking and management
-- Activity logging and monitoring
+### Admin Features
+- Analytics dashboard with real-time data
+- User management
+- Course management
+- Activity monitoring
+- Revenue tracking
 
-### 📊 Comprehensive Analytics Dashboard
-- Real-time platform statistics
-- User growth tracking
-- Course performance analytics
-- Revenue and enrollment metrics
-- Interactive charts and visualizations
-- Data export capabilities (JSON/CSV)
+### Technical Features
+- RESTful API with Flask
+- MySQL database integration
+- JWT authentication
+- File upload handling
+- CORS support for frontend integration
+- Responsive design
 
-### 🎯 Course Management System
-- Complete course lifecycle management
-- Module and lesson organization
-- Video content integration
-- Quiz and assessment system
-- Progress tracking and completion certificates
-- Review and rating system
-
-### 🏗️ Advanced Database Architecture
-- MySQL with optimized schema design
-- Advanced indexing for performance
-- Stored procedures for complex operations
-- Database views for simplified queries
-- Triggers for automated actions
-- Transaction support for data integrity
-
-### 📈 Learning Analytics
-- Student progress tracking
-- Lesson completion analytics
-- Time spent analysis
-- Skill development metrics
-- Certificate generation
-- Learning path recommendations
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with custom properties
-- **JavaScript (ES6+)** - Interactive functionality
-- **Chart.js** - Data visualization
-- **Font Awesome** - Icon library
+## Technology Stack
 
 ### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MySQL** - Primary database
-- **JWT** - Authentication tokens
-- **bcryptjs** - Password hashing
-- **Multer** - File upload handling
+- **Python 3.8+**
+- **Flask** - Web framework
+- **SQLAlchemy** - ORM for database operations
+- **MySQL** - Database
+- **JWT** - Authentication
+- **Flask-CORS** - Cross-origin resource sharing
 
-### Database Features
-- **Advanced SQL queries** with JOINs and subqueries
-- **Stored procedures** for complex business logic
-- **Triggers** for automated data management
-- **Views** for simplified data access
-- **Indexes** for optimized query performance
-- **Foreign key constraints** for data integrity
+### Frontend
+- **HTML5/CSS3** - Structure and styling
+- **JavaScript (ES6+)** - Interactive functionality
+- **Chart.js** - Analytics visualization
+- **Font Awesome** - Icons
 
-## 📋 Prerequisites
+## Installation & Setup
 
-Before setting up the project, ensure you have:
+### Prerequisites
+- Python 3.8 or higher
+- MySQL 8.0 or higher
+- Node.js (optional, for serving frontend)
 
-- **Node.js** (v14.0.0 or higher)
-- **MySQL** (v8.0 or higher)
-- **Git** for version control
-- **Web browser** (Chrome, Firefox, Safari, Edge)
+### Backend Setup
 
-## 🚀 Installation & Setup
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd FEE-PROJECT
+   ```
 
-### 1. Database Setup
+2. **Set up Python virtual environment**
+   ```bash
+   cd backend
+   python -m venv venv
+   
+   # On Windows
+   venv\Scripts\activate
+   
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
 
-#### A. Create MySQL Database
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. **Start MySQL server** on your local machine
-2. **Connect to MySQL** using your preferred client:
+4. **Set up MySQL database**
+   ```bash
+   # Login to MySQL as root
+   mysql -u root -p
+   
+   # Create database and user
+   CREATE DATABASE knowledgenest_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   CREATE USER 'knowledgenest'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON knowledgenest_db.* TO 'knowledgenest'@'localhost';
+   FLUSH PRIVILEGES;
+   
+   # Run the setup script
+   source database_setup.sql;
+   ```
 
-```bash
-mysql -u root -p
-```
+5. **Configure environment variables**
+   ```bash
+   # Create .env file in backend directory
+   cp .env.example .env
+   
+   # Edit .env with your database credentials
+   MYSQL_USER=knowledgenest
+   MYSQL_PASSWORD=your_password
+   MYSQL_DB=knowledgenest_db
+   ```
 
-3. **Run the database schema**:
+6. **Run the backend server**
+   ```bash
+   python app.py
+   ```
+   The API will be available at `http://localhost:5000`
 
-```bash
-mysql -u root -p < database/schema.sql
-```
+### Frontend Setup
 
-### 2. Install Dependencies
+1. **Navigate to frontend directory**
+   ```bash
+   cd CODES
+   ```
 
-Navigate to the backend directory and install Node.js dependencies:
+2. **Serve the frontend files**
+   
+   **Option 1: Using Python's built-in server**
+   ```bash
+   python -m http.server 8080
+   ```
+   
+   **Option 2: Using Node.js http-server**
+   ```bash
+   npx http-server -p 8080 -c-1
+   ```
+   
+   **Option 3: Using any web server (Apache, Nginx, etc.)**
 
-```bash
-cd backend
-npm install
-```
+3. **Access the application**
+   Open your browser and go to `http://localhost:8080`
 
-### 3. Environment Configuration
+## Database Schema
 
+### Users Table
+- `id` - Primary key
+- `name` - User's full name
+- `email` - Unique email address
+- `password_hash` - Encrypted password
+- `role` - User role (student, instructor, admin)
+- `profile_image` - Profile image filename
+- `created_at`, `updated_at` - Timestamps
+- `is_active` - Account status
+
+### Courses Table
+- `id` - Primary key
+- `title` - Course title
+- `description` - Course description
+- `category` - Course category
+- `instructor_id` - Foreign key to users table
+- `price` - Course price
+- `duration_hours` - Course duration
+- `difficulty_level` - Beginner/Intermediate/Advanced
+- `is_published` - Publication status
+
+### Enrollments Table
+- `id` - Primary key
+- `user_id` - Foreign key to users
+- `course_id` - Foreign key to courses
+- `enrolled_at` - Enrollment timestamp
+- `completed_at` - Completion timestamp
+- `progress_percentage` - Course progress
+- `rating` - Course rating (1-5)
+- `review` - Course review
+
+## API Endpoints
+
+### Authentication
+- `POST /api/register` - User registration
+- `POST /api/login` - User login
+- `GET /api/profile` - Get user profile
+- `PUT /api/profile` - Update user profile
+- `POST /api/upload-profile-image` - Upload profile image
+
+### Courses
+- `GET /api/courses` - Get all courses (with pagination)
+- `GET /api/courses/<id>` - Get specific course
+- `POST /api/enroll` - Enroll in a course
+- `GET /api/my-courses` - Get user's enrolled courses
+
+### Analytics (Admin only)
+- `GET /api/analytics/overview` - Get dashboard overview
+- `GET /api/analytics/activity` - Get recent user activity
+
+## Default Admin Account
+
+After running the database setup, a default admin account is created:
+- **Email:** admin@knowledgenest.com
+- **Password:** admin123
+
+**Important:** Change this password in production!
+
+## Configuration
+
+### Environment Variables
 Create a `.env` file in the backend directory:
 
 ```env
+FLASK_ENV=development
+SECRET_KEY=your-secret-key-change-in-production
+JWT_SECRET_KEY=jwt-secret-string-change-in-production
+
 # Database Configuration
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_mysql_password
-DB_NAME=knowledgenest_lms
-
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-here
-
-# Server Configuration
-PORT=3000
-NODE_ENV=development
+MYSQL_HOST=localhost
+MYSQL_USER=knowledgenest
+MYSQL_PASSWORD=your_password
+MYSQL_DB=knowledgenest_db
 ```
 
-### 4. Start the Application
+### Frontend Configuration
+Update the API base URL in `CODES/api.js`:
+```javascript
+const API_BASE_URL = 'http://localhost:5000/api';
+```
 
+## Usage
+
+### For Students
+1. Register a new account or login
+2. Browse available courses
+3. Enroll in courses
+4. Track your progress
+5. Rate and review completed courses
+
+### For Admins
+1. Login with admin credentials
+2. Access the analytics dashboard
+3. Monitor user activity and course performance
+4. View enrollment statistics and revenue data
+
+## Development
+
+### Adding New Features
+1. Create database migrations for schema changes
+2. Add new API endpoints in `backend/app.py`
+3. Update frontend JavaScript to consume new APIs
+4. Test thoroughly before deployment
+
+### Database Migrations
+When making schema changes:
+1. Update the models in `app.py`
+2. Create migration SQL scripts
+3. Update `database_setup.sql` for fresh installations
+
+## Deployment
+
+### Production Considerations
+1. Use a production WSGI server (Gunicorn, uWSGI)
+2. Set up a reverse proxy (Nginx, Apache)
+3. Use environment variables for sensitive configuration
+4. Enable SSL/HTTPS
+5. Set up database backups
+6. Configure logging and monitoring
+
+### Example Production Setup
 ```bash
-cd backend
-npm start
+# Install Gunicorn
+pip install gunicorn
+
+# Run with Gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 
-The server will start on `http://localhost:3000`
+## Troubleshooting
 
-### 5. Access the Frontend
+### Common Issues
 
-Open your web browser and navigate to:
+1. **Database Connection Error**
+   - Check MySQL service is running
+   - Verify database credentials in `.env`
+   - Ensure database and user exist
 
-- **Homepage**: `http://localhost:3000`
-- **Dashboard**: `http://localhost:3000/dashboard`
-- **Login**: `http://localhost:3000/login`
-- **Courses**: `http://localhost:3000/courses`
+2. **CORS Errors**
+   - Check frontend URL is in CORS_ORIGINS config
+   - Verify API base URL in frontend
 
-## 📊 Advanced SQL Features
+3. **File Upload Issues**
+   - Check upload directory permissions
+   - Verify file size limits
+   - Ensure allowed file extensions
 
-### Database Schema Highlights
+4. **Authentication Issues**
+   - Check JWT secret key configuration
+   - Verify token expiration settings
+   - Clear browser localStorage if needed
 
-#### Key Tables
-1. **Users** - Role-based user management
-2. **Courses** - Course metadata and content
-3. **Enrollments** - Student-course relationships with progress
-4. **Lessons** - Individual learning content items
-5. **Analytics Tables** - Comprehensive performance metrics
+## Contributing
 
-#### Advanced SQL Concepts Implemented
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-##### 1. Complex JOINs and Subqueries
-```sql
--- Get comprehensive course analytics
-SELECT 
-    c.course_id,
-    c.title,
-    COUNT(DISTINCT e.user_id) as total_enrollments,
-    AVG(e.progress_percentage) as avg_progress,
-    AVG(cr.rating) as avg_rating,
-    SUM(CASE WHEN e.payment_status = 'paid' THEN e.payment_amount ELSE 0 END) as revenue
-FROM courses c
-LEFT JOIN enrollments e ON c.course_id = e.course_id
-LEFT JOIN course_reviews cr ON c.course_id = cr.course_id
-WHERE c.status = 'published'
-GROUP BY c.course_id, c.title
-ORDER BY total_enrollments DESC;
-```
+## License
 
-##### 2. Stored Procedures
-```sql
--- Calculate and update course completion rates
-CREATE PROCEDURE CalculateCourseCompletion(IN courseId INT)
-BEGIN
-    DECLARE total_lessons INT DEFAULT 0;
-    -- Complex business logic for progress calculation
-    UPDATE enrollments SET progress_percentage = calculated_progress
-    WHERE course_id = courseId;
-END
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-##### 3. Database Views
-```sql
--- Simplified course overview with statistics
-CREATE VIEW course_overview AS
-SELECT 
-    c.*,
-    u.first_name as instructor_first_name,
-    cs.total_enrollments,
-    cs.average_rating
-FROM courses c
-JOIN users u ON c.instructor_id = u.user_id
-LEFT JOIN course_statistics cs ON c.course_id = cs.course_id;
-```
+## Support
 
-##### 4. Triggers for Automation
-```sql
--- Auto-issue certificates on course completion
-CREATE TRIGGER issue_certificate_on_completion
-    AFTER UPDATE ON enrollments
-    FOR EACH ROW
-BEGIN
-    IF NEW.status = 'completed' AND OLD.status != 'completed' THEN
-        INSERT INTO certificates (user_id, course_id, certificate_code, title)
-        VALUES (NEW.user_id, NEW.course_id, GENERATED_CODE, COURSE_TITLE);
-    END IF;
-END
-```
-
-##### 5. Window Functions and Analytics
-```sql
--- User growth analytics with window functions
-SELECT 
-    DATE(date_created) as date,
-    COUNT(*) as new_users,
-    SUM(COUNT(*)) OVER (ORDER BY DATE(date_created)) as cumulative_users
-FROM users
-WHERE date_created >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-GROUP BY DATE(date_created)
-ORDER BY date;
-```
-
-## 🔧 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - Get user profile
-
-### Analytics
-- `GET /api/analytics/dashboard` - Platform analytics (Admin)
-- `GET /api/analytics/instructor` - Instructor analytics
-- `GET /api/analytics/student` - Student analytics
-- `GET /api/analytics/export/:type` - Export data
-
-### Courses
-- `GET /api/courses` - List all courses
-- `POST /api/courses` - Create new course
-- `GET /api/courses/:id` - Get course details
-
-## 🎯 Key Learning Outcomes
-
-### Advanced DBMS Concepts Covered
-
-1. **Database Design & Normalization**
-   - 3NF normalized schema
-   - Entity-relationship modeling
-   - Foreign key constraints
-
-2. **Query Optimization**
-   - Strategic indexing
-   - Query execution plans
-   - Performance tuning
-
-3. **Advanced SQL Operations**
-   - Window functions
-   - CTEs (Common Table Expressions)
-   - Complex aggregations
-   - JSON data handling
-
-4. **Database Programming**
-   - Stored procedures
-   - User-defined functions
-   - Triggers and events
-   - Error handling
-
-5. **Analytics & Reporting**
-   - Data warehousing concepts
-   - OLAP operations
-   - Real-time analytics
-   - Data visualization integration
-
-## 📈 Real-World Applications
-
-This project demonstrates:
-
-- **E-learning Platform Development**
-- **User Analytics and Reporting**
-- **Payment Processing Integration**
-- **Content Management Systems**
-- **Performance Monitoring**
-- **Scalable Database Architecture**
-
-## 🔒 Security & Best Practices
-
-- **Input validation** with Joi schemas
-- **SQL injection prevention** with parameterized queries
-- **Authentication** with JWT tokens
-- **Password hashing** with bcrypt
-- **Rate limiting** for API protection
-- **Activity logging** for audit trails
-
-## 👨‍💻 Author
-
-**Vihaan Kashyap**
-- Full-Stack Developer
-- Database Architect
-- Learning Technology Enthusiast
-
----
-
-**This project showcases advanced SQL integration with modern web development, creating a comprehensive learning management system with real-world applicability.**
+For support and questions:
+- Create an issue in the repository
+- Check the troubleshooting section
+- Review the API documentation
