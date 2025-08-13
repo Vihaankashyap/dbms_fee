@@ -1,236 +1,236 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>profile</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 
-   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header class="header">
-   
-   <section class="flex">
+    <header class="header">
 
-      <a href="home.html" class="logo">KnowledgeNest</a>
-<img src="images/logo-1.jpeg" 
-     alt="Logo" 
-     style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+        <section class="flex">
 
-      <form action="search.html" method="post" class="search-form">
-         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
-         <button type="submit" class="fas fa-search"></button>
-      </form>
+            <a href="home.html" class="logo">KnowledgeNest</a>
+            <img src="images/logo-1.jpeg" alt="Logo"
+                style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
 
-      <div class="icons">
-         <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="search-btn" class="fas fa-search"></div>
-         <div id="user-btn" class="fas fa-user"></div>
-         <div id="toggle-btn" class="fas fa-sun"></div>
-      </div>
+            <form action="search.html" method="post" class="search-form">
+                <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+                <button type="submit" class="fas fa-search"></button>
+            </form>
 
-      <div class="profile">
-         <img src="images/pic-1.jpg" class="image" alt="">
-         <h3 class="name">shaikh anas</h3>
-         <p class="role">studen</p>
-         <a href="profile.html" class="btn">view profile</a>
-         <div class="flex-btn">
-            <a href="login.html" class="option-btn">login</a>
-            <a href="register.html" class="option-btn">register</a>
-         </div>
-      </div>
-
-   </section>
-
-</header>   
-
-<div class="side-bar">
-
-   <div id="close-btn">
-      <i class="fas fa-times"></i>
-   </div>
-
-   <div class="profile">
-      <img src="images/pic-1.jpg" class="image" alt="">
-      <h3 class="name">VIHAAN</h3>
-      <p class="role">student</p>
-      <a href="profile.html" class="btn">view profile</a> 
-   </div>
-
-   <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
-      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
-      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
-      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
-   </nav>
-
-</div>
-
-<section class="user-profile">
-
-   <h1 class="heading">your profile</h1>
-
-   <div class="info">
-
-      <div class="user">
-         <img id="profileImage" src="images/pic-1.jpg" alt="">
-         <h3 id="userName">Loading...</h3>
-         <p id="userRole">Loading...</p>
-         <a href="update.html" class="inline-btn">update profile</a>
-      </div>
-   
-      <div class="box-container">
-   
-         <div class="box">
-            <div class="flex">
-               <i class="fas fa-graduation-cap"></i>
-               <div>
-                  <span id="totalCourses">0</span>
-                  <p>enrolled courses</p>
-               </div>
+            <div class="icons">
+                <div id="menu-btn" class="fas fa-bars"></div>
+                <div id="search-btn" class="fas fa-search"></div>
+                <div id="user-btn" class="fas fa-user"></div>
+                <div id="toggle-btn" class="fas fa-sun"></div>
             </div>
-            <a href="#" class="inline-btn" onclick="showMyCourses()">view courses</a>
-         </div>
-   
-         <div class="box">
-            <div class="flex">
-               <i class="fas fa-certificate"></i>
-               <div>
-                  <span id="completedCourses">0</span>
-                  <p>completed courses</p>
-               </div>
+
+            <div class="profile">
+                <img src="images/pic-1.jpg" class="image" alt="">
+                <h3 class="name">shaikh anas</h3>
+                <p class="role">studen</p>
+                <a href="profile.html" class="btn">view profile</a>
+                <div class="flex-btn">
+                    <a href="login.html" class="option-btn">login</a>
+                    <a href="register.html" class="option-btn">register</a>
+                </div>
             </div>
-            <a href="#" class="inline-btn" onclick="showCompletedCourses()">view certificates</a>
-         </div>
-   
-         <div class="box">
-            <div class="flex">
-               <i class="fas fa-calendar"></i>
-               <div>
-                  <span id="memberSince">Loading...</span>
-                  <p>member since</p>
-               </div>
+
+        </section>
+
+    </header>
+
+    <div class="side-bar">
+
+        <div id="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+
+        <div class="profile">
+            <img src="images/pic-1.jpg" class="image" alt="">
+            <h3 class="name">VIHAAN</h3>
+            <p class="role">student</p>
+            <a href="profile.html" class="btn">view profile</a>
+        </div>
+
+        <nav class="navbar">
+            <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+            <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+            <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+            <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+            <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+        </nav>
+
+    </div>
+
+    <section class="user-profile">
+
+        <h1 class="heading">your profile</h1>
+
+        <div class="info">
+
+            <div class="user">
+                <img id="profileImage" src="images/pic-1.jpg" alt="">
+                <h3 id="userName">Loading...</h3>
+                <p id="userRole">Loading...</p>
+                <a href="update.html" class="inline-btn">update profile</a>
             </div>
-            <a href="#" class="inline-btn" onclick="showActivity()">view activity</a>
-         </div>
-   
-      </div>
-   </div>
 
-   <!-- My Courses Section -->
-   <div id="myCoursesSection" style="display: none; margin-top: 2rem;">
-      <h2 class="heading">My Enrolled Courses</h2>
-      <div id="coursesList" class="courses-container">
-         <!-- Courses will be loaded here -->
-      </div>
-   </div>
+            <div class="box-container">
 
-</section>
+                <div class="box">
+                    <div class="flex">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <span id="totalCourses">0</span>
+                            <p>enrolled courses</p>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-btn" onclick="showMyCourses()">view courses</a>
+                </div>
 
-<footer class="footer">
+                <div class="box">
+                    <div class="flex">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <span id="completedCourses">0</span>
+                            <p>completed courses</p>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-btn" onclick="showCompletedCourses()">view certificates</a>
+                </div>
 
-   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+                <div class="box">
+                    <div class="flex">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <span id="memberSince">Loading...</span>
+                            <p>member since</p>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-btn" onclick="showActivity()">view activity</a>
+                </div>
 
-</footer>
+            </div>
+        </div>
 
-<!-- API and custom js file links -->
-<script src="api.js"></script>
-<script src="script.js"></script>
+        <!-- My Courses Section -->
+        <div id="myCoursesSection" style="display: none; margin-top: 2rem;">
+            <h2 class="heading">My Enrolled Courses</h2>
+            <div id="coursesList" class="courses-container">
+                <!-- Courses will be loaded here -->
+            </div>
+        </div>
 
-<script>
-let userProfile = null;
-let userCourses = [];
+    </section>
 
-// Load user profile on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    // Check if user is logged in
-    if (!UIHelpers.isLoggedIn()) {
-        UIHelpers.redirectToLogin();
-        return;
-    }
+    <footer class="footer">
 
-    try {
-        UIHelpers.showLoading(true);
-        
-        // Load user profile
-        userProfile = await api.getProfile();
-        displayProfile(userProfile);
-        
-        // Load user's courses
-        const coursesResponse = await api.getMyCourses();
-        userCourses = coursesResponse.courses;
-        
-    } catch (error) {
-        UIHelpers.showMessage('Failed to load profile: ' + error.message, 'error');
-        if (error.message.includes('Unauthorized') || error.message.includes('token')) {
-            UIHelpers.redirectToLogin();
+        &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+
+    </footer>
+
+    <!-- API and custom js file links -->
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        let userProfile = null;
+        let userCourses = [];
+
+        // Load user profile on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if user is logged in
+            if (!UIHelpers.isLoggedIn()) {
+                UIHelpers.redirectToLogin();
+                return;
+            }
+
+            try {
+                UIHelpers.showLoading(true);
+
+                // Load user profile
+                userProfile = await api.getProfile();
+                displayProfile(userProfile);
+
+                // Load user's courses
+                const coursesResponse = await api.getMyCourses();
+                userCourses = coursesResponse.courses;
+
+            } catch (error) {
+                UIHelpers.showMessage('Failed to load profile: ' + error.message, 'error');
+                if (error.message.includes('Unauthorized') || error.message.includes('token')) {
+                    UIHelpers.redirectToLogin();
+                }
+            } finally {
+                UIHelpers.showLoading(false);
+            }
+        });
+
+        function displayProfile(profile) {
+            // Update profile information
+            document.getElementById('userName').textContent = profile.name;
+            document.getElementById('userRole').textContent = profile.role;
+
+            // Update profile image
+            const profileImg = document.getElementById('profileImage');
+            if (profile.profile_image && profile.profile_image !== 'default.jpg') {
+                profileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+            }
+
+            // Update statistics
+            document.getElementById('totalCourses').textContent = profile.total_courses || 0;
+            document.getElementById('completedCourses').textContent = profile.completed_courses || 0;
+
+            // Format member since date
+            const memberSince = new Date(profile.created_at);
+            document.getElementById('memberSince').textContent = memberSince.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short'
+            });
+
+            // Update header profile info
+            const headerProfileName = document.querySelector('.header .profile .name');
+            const headerProfileRole = document.querySelector('.header .profile .role');
+            const headerProfileImg = document.querySelector('.header .profile .image');
+            const sidebarProfileName = document.querySelector('.side-bar .profile .name');
+            const sidebarProfileRole = document.querySelector('.side-bar .profile .role');
+            const sidebarProfileImg = document.querySelector('.side-bar .profile .image');
+
+            if (headerProfileName) headerProfileName.textContent = profile.name;
+            if (headerProfileRole) headerProfileRole.textContent = profile.role;
+            if (sidebarProfileName) sidebarProfileName.textContent = profile.name;
+            if (sidebarProfileRole) sidebarProfileRole.textContent = profile.role;
+
+            if (headerProfileImg && profile.profile_image !== 'default.jpg') {
+                headerProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+            }
+            if (sidebarProfileImg && profile.profile_image !== 'default.jpg') {
+                sidebarProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
+            }
         }
-    } finally {
-        UIHelpers.showLoading(false);
-    }
-});
 
-function displayProfile(profile) {
-    // Update profile information
-    document.getElementById('userName').textContent = profile.name;
-    document.getElementById('userRole').textContent = profile.role;
-    
-    // Update profile image
-    const profileImg = document.getElementById('profileImage');
-    if (profile.profile_image && profile.profile_image !== 'default.jpg') {
-        profileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
-    }
-    
-    // Update statistics
-    document.getElementById('totalCourses').textContent = profile.total_courses || 0;
-    document.getElementById('completedCourses').textContent = profile.completed_courses || 0;
-    
-    // Format member since date
-    const memberSince = new Date(profile.created_at);
-    document.getElementById('memberSince').textContent = memberSince.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short' 
-    });
-    
-    // Update header profile info
-    const headerProfileName = document.querySelector('.header .profile .name');
-    const headerProfileRole = document.querySelector('.header .profile .role');
-    const headerProfileImg = document.querySelector('.header .profile .image');
-    const sidebarProfileName = document.querySelector('.side-bar .profile .name');
-    const sidebarProfileRole = document.querySelector('.side-bar .profile .role');
-    const sidebarProfileImg = document.querySelector('.side-bar .profile .image');
-    
-    if (headerProfileName) headerProfileName.textContent = profile.name;
-    if (headerProfileRole) headerProfileRole.textContent = profile.role;
-    if (sidebarProfileName) sidebarProfileName.textContent = profile.name;
-    if (sidebarProfileRole) sidebarProfileRole.textContent = profile.role;
-    
-    if (headerProfileImg && profile.profile_image !== 'default.jpg') {
-        headerProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
-    }
-    if (sidebarProfileImg && profile.profile_image !== 'default.jpg') {
-        sidebarProfileImg.src = `http://localhost:5001/uploads/profiles/${profile.profile_image}`;
-    }
-}
+        function showMyCourses() {
+            const section = document.getElementById('myCoursesSection');
+            const coursesList = document.getElementById('coursesList');
 
-function showMyCourses() {
-    const section = document.getElementById('myCoursesSection');
-    const coursesList = document.getElementById('coursesList');
-    
-    if (section.style.display === 'none') {
-        section.style.display = 'block';
-        
-        // Display courses
-        if (userCourses.length === 0) {
-            coursesList.innerHTML = '<p>No courses enrolled yet. <a href="courses.html">Browse courses</a></p>';
-        } else {
-            coursesList.innerHTML = userCourses.map(course => `
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+
+                // Display courses
+                if (userCourses.length === 0) {
+                    coursesList.innerHTML = '<p>No courses enrolled yet. <a href="courses.html">Browse courses</a></p>';
+                } else {
+                    coursesList.innerHTML = userCourses.map(course => `
                 <div class="course-card" style="border: 1px solid #ddd; padding: 1rem; margin: 1rem 0; border-radius: 8px;">
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <img src="${course.thumbnail ? `http://localhost:5001/uploads/${course.thumbnail}` : 'images/thumb-1.png'}" 
@@ -250,62 +250,63 @@ function showMyCourses() {
                             ` : ''}
                         </div>
                         <div>
-                            ${course.enrollment && course.enrollment.completed_at ? 
-                                '<span style="color: #4CAF50; font-weight: bold;">✓ Completed</span>' : 
-                                '<a href="#" class="inline-btn">Continue</a>'
-                            }
+                            ${course.enrollment && course.enrollment.completed_at ?
+                            '<span style="color: #4CAF50; font-weight: bold;">✓ Completed</span>' :
+                            '<a href="#" class="inline-btn">Continue</a>'
+                        }
                         </div>
                     </div>
                 </div>
             `).join('');
+                }
+            } else {
+                section.style.display = 'none';
+            }
         }
-    } else {
-        section.style.display = 'none';
-    }
-}
 
-function showCompletedCourses() {
-    const completedCourses = userCourses.filter(course => 
-        course.enrollment && course.enrollment.completed_at
-    );
-    
-    if (completedCourses.length === 0) {
-        UIHelpers.showMessage('No completed courses yet. Keep learning!', 'info');
-    } else {
-        UIHelpers.showMessage(`You have completed ${completedCourses.length} courses!`, 'success');
-        showMyCourses(); // Show courses section
-    }
-}
+        function showCompletedCourses() {
+            const completedCourses = userCourses.filter(course =>
+                course.enrollment && course.enrollment.completed_at
+            );
 
-function showActivity() {
-    UIHelpers.showMessage('Activity tracking feature coming soon!', 'info');
-}
+            if (completedCourses.length === 0) {
+                UIHelpers.showMessage('No completed courses yet. Keep learning!', 'info');
+            } else {
+                UIHelpers.showMessage(`You have completed ${completedCourses.length} courses!`, 'success');
+                showMyCourses(); // Show courses section
+            }
+        }
 
-// Add logout functionality
-function logout() {
-    api.logout();
-    UIHelpers.showMessage('Logged out successfully', 'success');
-    setTimeout(() => {
-        window.location.href = 'home.html';
-    }, 1000);
-}
+        function showActivity() {
+            UIHelpers.showMessage('Activity tracking feature coming soon!', 'info');
+        }
 
-// Add logout button to profile if it doesn't exist
-document.addEventListener('DOMContentLoaded', () => {
-    const profileSection = document.querySelector('.user-profile .user');
-    if (profileSection && !document.getElementById('logoutBtn')) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'logoutBtn';
-        logoutBtn.className = 'inline-btn';
-        logoutBtn.textContent = 'Logout';
-        logoutBtn.style.marginTop = '1rem';
-        logoutBtn.style.backgroundColor = '#e74c3c';
-        logoutBtn.onclick = logout;
-        profileSection.appendChild(logoutBtn);
-    }
-});
-</script>
+        // Add logout functionality
+        function logout() {
+            api.logout();
+            UIHelpers.showMessage('Logged out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1000);
+        }
 
-   
+        // Add logout button to profile if it doesn't exist
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileSection = document.querySelector('.user-profile .user');
+            if (profileSection && !document.getElementById('logoutBtn')) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.id = 'logoutBtn';
+                logoutBtn.className = 'inline-btn';
+                logoutBtn.textContent = 'Logout';
+                logoutBtn.style.marginTop = '1rem';
+                logoutBtn.style.backgroundColor = '#e74c3c';
+                logoutBtn.onclick = logout;
+                profileSection.appendChild(logoutBtn);
+            }
+        });
+    </script>
+
+
 </body>
+
 </html>
