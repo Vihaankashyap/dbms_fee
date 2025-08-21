@@ -19,10 +19,12 @@ SELECT
     name,
     email,
     role,
+    profile_image,
     DATE(created_at) as joined_date,
+    TIME(created_at) as joined_time,
     is_active
 FROM users 
-ORDER BY id;
+ORDER BY created_at DESC;
 "
 
 echo ""

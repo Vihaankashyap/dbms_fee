@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Analytics - KnowledgeNest</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Analytics System Test</h1>
+    
+    <div class="test-section">
+        <h3>Authentication Test</h3>
+        <button onclick="testAuth()">Test Admin Login</button>
+        <div id="authResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Analytics API Test</h3>
+        <button onclick="testAnalyticsAPI()">Test Analytics Endpoints</button>
+        <div id="apiResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Real-time Updates Test</h3>
+        <button onclick="startRealTimeTest()">Start Real-time Test</button>
+        <button onclick="stopRealTimeTest()">Stop Test</button>
+        <div id="realTimeResult"></div>
+    </div>
+
+    <script src="api.js"></script>
+    
+    <script>
+        let realTimeInterval;
+        
+        async function testAuth() {
+            const resultDiv = document.getElementById('authResult');
+            resultDiv.innerHTML = '<p>Testing admin authentication...</p>';
+            
+            try {
+                const response = await api.login({
+                    email: 'admin@knowledgenest.com',
+                    password: 'admin123'
+                });
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ Admin login successful!</p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Login failed: ${error.message}</p>`;
+            }
+        }
+        
+        async function testAnalyticsAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<p>Testing analytics endpoints...</p>';
+            
+            try {
+                // Test real-time analytics
+                const realTimeData = await api.getRealTimeAnalytics();
+                
+                // Test users analytics
+                const usersData = await api.getUsersAnalytics();
+                
+                // Test activity feed
+                const activityData = await api.getRecentActivity();
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ All analytics endpoints working!</p>
+                    <h4>Real-time Data:</h4>
+                    <pre>${JSON.stringify(realTimeData, null, 2)}</pre>
+                    <h4>Users Data:</h4>
+                    <pre>${JSON.stringify(usersData, null, 2)}</pre>
+                    <h4>Activity Data:</h4>
+                    <pre>${JSON.stringify(activityData, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ API test failed: ${error.message}</p>`;
+            }
+        }
+        
+        function startRealTimeTest() {
+            const resultDiv = document.getElementById('realTimeResult');
+            let updateCount = 0;
+            
+            resultDiv.innerHTML = '<p>🔄 Starting real-time updates...</p>';
+            
+            realTimeInterval = setInterval(async () => {
+                try {
+                    updateCount++;
+                    const data = await api.getRealTimeAnalytics();
+                    
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ Real-time update #${updateCount}</p>
+                        <p>Timestamp: ${data.timestamp}</p>
+                        <p>Users: ${data.total_users} | Courses: ${data.total_courses} | Active Today: ${data.active_users_today}</p>
+                    `;
+                } catch (error) {
+                    resultDiv.innerHTML = `<p class="error">❌ Real-time update failed: ${error.message}</p>`;
+                }
+            }, 3000); // Update every 3 seconds for testing
+        }
+        
+        function stopRealTimeTest() {
+            if (realTimeInterval) {
+                clearInterval(realTimeInterval);
+                document.getElementById('realTimeResult').innerHTML = '<p>⏹️ Real-time test stopped</p>';
+            }
+        }
+    </script>
+</body>
+</html>

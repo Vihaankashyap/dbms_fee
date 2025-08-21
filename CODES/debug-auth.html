@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Authentication - KnowledgeNest</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .debug-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        
+        .debug-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 0.1rem solid var(--light-color);
+            border-radius: 0.5rem;
+        }
+        
+        .debug-title {
+            color: var(--main-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 1.2rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .debug-button {
+            background: var(--main-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .debug-button:hover {
+            background: var(--orange);
+        }
+        
+        .danger-button {
+            background: #dc3545;
+        }
+        
+        .danger-button:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="debug-container">
+    <h1>🔧 Authentication Debug Tool</h1>
+    
+    <div class="debug-section">
+        <h3 class="debug-title">Current Authentication Status</h3>
+        <div id="authStatus" class="debug-info">Loading...</div>
+        <button class="debug-button" onclick="refreshStatus()">Refresh Status</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3 class="debug-title">LocalStorage Data</h3>
+        <div id="localStorageData" class="debug-info">Loading...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3 class="debug-title">API Connection Test</h3>
+        <div id="apiTest" class="debug-info">Click button to test...</div>
+        <button class="debug-button" onclick="testAPI()">Test API Connection</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3 class="debug-title">Actions</h3>
+        <button class="debug-button" onclick="validateAuth()">Validate Authentication</button>
+        <button class="debug-button danger-button" onclick="clearAllData()">Clear All Auth Data</button>
+        <button class="debug-button" onclick="goToLogin()">Go to Login</button>
+        <button class="debug-button" onclick="goToRegister()">Go to Register</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3 class="debug-title">Database Users</h3>
+        <div id="dbUsers" class="debug-info">Click button to load...</div>
+        <button class="debug-button" onclick="loadDBUsers()">Load Database Users</button>
+    </div>
+</div>
+
+<script src="api.js"></script>
+<script src="auth-helper.js"></script>
+<script src="clear-auth.js"></script>
+
+<script>
+function refreshStatus() {
+    const token = localStorage.getItem('access_token');
+    const userData = localStorage.getItem('user_data');
+    const isLoggedIn = !!token;
+    
+    let status = `Is Logged In: ${isLoggedIn}\n`;
+    status += `Has Token: ${!!token}\n`;
+    status += `Has User Data: ${!!userData}\n`;
+    
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            status += `User Name: ${user.name || 'N/A'}\n`;
+            status += `User Email: ${user.email || 'N/A'}\n`;
+            status += `User Role: ${user.role || 'N/A'}\n`;
+            status += `User ID: ${user.id || 'N/A'}\n`;
+        } catch (error) {
+            status += `User Data Error: ${error.message}\n`;
+        }
+    }
+    
+    document.getElementById('authStatus').textContent = status;
+    
+    // Update localStorage display
+    const allLocalStorage = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        allLocalStorage[key] = localStorage.getItem(key);
+    }
+    document.getElementById('localStorageData').textContent = JSON.stringify(allLocalStorage, null, 2);
+}
+
+async function testAPI() {
+    const testDiv = document.getElementById('apiTest');
+    testDiv.textContent = 'Testing API connection...';
+    
+    try {
+        const response = await fetch('http://localhost:5004/api/health');
+        const data = await response.json();
+        testDiv.textContent = `API Status: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`;
+    } catch (error) {
+        testDiv.textContent = `API Error: ${error.message}`;
+    }
+}
+
+function validateAuth() {
+    if (typeof AuthHelper !== 'undefined' && AuthHelper.validateAuthData) {
+        const isValid = AuthHelper.validateAuthData();
+        alert(`Authentication data is ${isValid ? 'valid' : 'invalid'}`);
+        refreshStatus();
+    } else {
+        alert('AuthHelper not available');
+    }
+}
+
+function clearAllData() {
+    if (confirm('Are you sure you want to clear all authentication data?')) {
+        if (typeof clearAllAuthData !== 'undefined') {
+            clearAllAuthData();
+        } else {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('All data cleared manually');
+            refreshStatus();
+        }
+    }
+}
+
+function goToLogin() {
+    window.location.href = 'login.html';
+}
+
+function goToRegister() {
+    window.location.href = 'register.html';
+}
+
+async function loadDBUsers() {
+    const dbDiv = document.getElementById('dbUsers');
+    dbDiv.textContent = 'Loading database users...';
+    
+    try {
+        // This would need a specific API endpoint to get users
+        const response = await fetch('http://localhost:5004/api/users', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        
+        if (response.ok) {
+            const users = await response.json();
+            dbDiv.textContent = JSON.stringify(users, null, 2);
+        } else {
+            dbDiv.textContent = `Error: ${response.status} - ${response.statusText}`;
+        }
+    } catch (error) {
+        dbDiv.textContent = `Database Error: ${error.message}`;
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    refreshStatus();
+});
+</script>
+
+</body>
+</html>

@@ -11,6 +11,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="auth-styles.css">
 
 </head>
 <body>
@@ -34,9 +35,9 @@
       </div>
 
       <div class="profile">
-         <img src="images/pic-1.jpg" class="image" alt="">
-         <h3 class="name">shaikh anas</h3>
-         <p class="role">studen</p>
+         <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="Guest">
+         <h3 id="headerProfileName" class="name">Guest</h3>
+         <p id="headerProfileRole" class="role">visitor</p>
          <a href="profile.html" class="btn">view profile</a>
          <div class="flex-btn">
             <a href="login.html" class="option-btn">login</a>
@@ -55,9 +56,9 @@
    </div>
 
    <div class="profile">
-      <img src="images/pic-1.jpg" class="image" alt="">
-      <h3 class="name">shaikh anas</h3>
-      <p class="role">studen</p>
+      <img src="images/pic-1.jpg" class="image" alt="Guest">
+      <h3 class="name">Guest User</h3>
+      <p class="role">visitor</p>
       <a href="profile.html" class="btn">view profile</a>
    </div>
 
@@ -80,12 +81,20 @@
       <p>your email <span>*</span></p>
       <input type="email" id="email" name="email" placeholder="enter your email" required maxlength="50" class="box">
       <p>your password <span>*</span></p>
-      <input type="password" id="password" name="password" placeholder="enter your password" required maxlength="20" class="box">
+      <input type="password" id="password" name="password" placeholder="enter your password" required minlength="6" maxlength="20" class="box">
       <p>confirm password <span>*</span></p>
-      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm your password" required maxlength="20" class="box">
-      <p>select profile (optional)</p>
-      <input type="file" id="profileImage" accept="image/*" class="box">
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm your password" required minlength="6" maxlength="20" class="box">
+      <p>select profile picture (optional)</p>
+      <div class="image-upload-container">
+         <input type="file" id="profileImage" accept="image/*" class="box">
+         <div id="imagePreview" style="margin-top: 10px; display: none;">
+            <img id="previewImg" src="" alt="Preview" style="max-width: 100px; max-height: 100px; border-radius: 50%; object-fit: cover;">
+         </div>
+      </div>
       <input type="submit" value="register now" class="btn">
+      <p style="text-align: center; margin-top: 15px;">
+         Already have an account? <a href="login.html" style="color: var(--main-color);">Login here</a>
+      </p>
    </form>
 
 </section>
@@ -113,21 +122,45 @@
 <!-- API and custom js file links -->
 <script src="api.js"></script>
 <script src="script.js"></script>
+<script src="auth-helper.js"></script>
+<script src="profile-updater.js"></script>
 
 <script>
-// Register form handling
+// Enhanced register form handling
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const profileImage = document.getElementById('profileImage').files[0];
     
-    // Validate passwords match
+    // Enhanced validation
+    if (!name || !email || !password || !confirmPassword) {
+        UIHelpers.showMessage('Please fill in all required fields', 'error');
+        return;
+    }
+    
+    if (name.length < 2) {
+        UIHelpers.showMessage('Name must be at least 2 characters long', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        UIHelpers.showMessage('Password must be at least 6 characters long', 'error');
+        return;
+    }
+    
     if (password !== confirmPassword) {
         UIHelpers.showMessage('Passwords do not match', 'error');
+        return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        UIHelpers.showMessage('Please enter a valid email address', 'error');
         return;
     }
     
@@ -143,29 +176,124 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         if (profileImage) {
             try {
                 await api.uploadProfileImage(profileImage);
-                UIHelpers.showMessage('Registration successful with profile image!', 'success');
+                // Refresh user data to get updated profile image
+                if (typeof ProfileUpdater !== 'undefined' && ProfileUpdater.refreshUserProfile) {
+                    await ProfileUpdater.refreshUserProfile();
+                }
+                UIHelpers.showMessage(`Welcome ${name}! Registration successful with profile image!`, 'success');
             } catch (error) {
-                UIHelpers.showMessage('Registration successful, but profile image upload failed', 'warning');
+                UIHelpers.showMessage(`Welcome ${name}! Registration successful, but profile image upload failed`, 'warning');
             }
         } else {
-            UIHelpers.showMessage('Registration successful!', 'success');
+            UIHelpers.showMessage(`Welcome ${name}! Registration successful!`, 'success');
         }
         
-        // Redirect to home page
+        // Update user display immediately (with safety check)
+        if (typeof AuthHelper !== 'undefined' && AuthHelper.updateUserDisplay) {
+            AuthHelper.updateUserDisplay();
+        }
+        
+        // Redirect to home page after registration
         setTimeout(() => {
             window.location.href = 'home.html';
-        }, 1000);
+        }, 2000);
         
     } catch (error) {
-        UIHelpers.showMessage(error.message || 'Registration failed', 'error');
+        UIHelpers.showMessage(error.message || 'Registration failed. Please try again.', 'error');
     } finally {
         UIHelpers.showLoading(false);
     }
 });
 
-// Check if already logged in
-if (UIHelpers.isLoggedIn()) {
-    window.location.href = 'home.html';
+// Image preview functionality
+document.getElementById('profileImage').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    
+    if (file) {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            UIHelpers.showMessage('Please select a valid image file', 'error');
+            e.target.value = '';
+            preview.style.display = 'none';
+            return;
+        }
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            UIHelpers.showMessage('Image size should be less than 5MB', 'error');
+            e.target.value = '';
+            preview.style.display = 'none';
+            return;
+        }
+        
+        if (typeof ProfileUpdater !== 'undefined' && ProfileUpdater.previewImage) {
+            ProfileUpdater.previewImage(this, previewImg);
+        }
+        preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
+    }
+});
+
+// Password strength indicator
+document.getElementById('password').addEventListener('input', function(e) {
+    const password = e.target.value;
+    const strength = getPasswordStrength(password);
+    
+    // Remove existing strength indicator
+    const existingIndicator = document.querySelector('.password-strength');
+    if (existingIndicator) {
+        existingIndicator.remove();
+    }
+    
+    if (password.length > 0) {
+        const indicator = document.createElement('div');
+        indicator.className = 'password-strength';
+        indicator.style.cssText = `
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            text-align: center;
+        `;
+        
+        switch (strength) {
+            case 'weak':
+                indicator.textContent = 'Weak password';
+                indicator.style.backgroundColor = '#ff4444';
+                indicator.style.color = 'white';
+                break;
+            case 'medium':
+                indicator.textContent = 'Medium strength';
+                indicator.style.backgroundColor = '#ffaa00';
+                indicator.style.color = 'white';
+                break;
+            case 'strong':
+                indicator.textContent = 'Strong password';
+                indicator.style.backgroundColor = '#00aa00';
+                indicator.style.color = 'white';
+                break;
+        }
+        
+        e.target.parentNode.insertBefore(indicator, e.target.nextSibling);
+    }
+});
+
+function getPasswordStrength(password) {
+    if (password.length < 6) return 'weak';
+    
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    
+    if (score < 3) return 'weak';
+    if (score < 4) return 'medium';
+    return 'strong';
 }
 </script>
 

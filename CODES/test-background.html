@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Test - KnowledgeNest</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="home.html" class="logo">KnowledgeNest</a>
+      <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="Logo" style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+
+      <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="search-btn" class="fas fa-search"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img src="images/pic-1.jpg" class="image" alt="">
+         <h3 class="name">Guest User</h3>
+         <p class="role">visitor</p>
+         <a href="profile.html" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="login.html" class="option-btn">login</a>
+            <a href="register.html" class="option-btn">register</a>
+         </div>
+      </div>
+
+   </section>
+
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img src="images/pic-1.jpg" class="image" alt="">
+      <h3 class="name">Guest User</h3>
+      <p class="role">visitor</p>
+      <a href="profile.html" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+   </nav>
+
+</div>
+
+<section>
+
+    <h1 class="heading">Background Test</h1>
+
+    <div style="background: var(--white); padding: 2rem; border-radius: 1rem; margin: 2rem 0; border: var(--border);">
+        <h2>This should have the same background as other pages</h2>
+        <p>The body background should be light gray (#eee)</p>
+        <p>This white box should stand out against the light gray background</p>
+        
+        <div style="margin: 2rem 0; padding: 1rem; background: var(--light-bg); border-radius: 0.5rem;">
+            <p>This box uses var(--light-bg) which should match the body background</p>
+        </div>
+        
+        <div style="margin: 2rem 0; padding: 1rem; background: #eee; border-radius: 0.5rem;">
+            <p>This box uses #eee directly which should also match</p>
+        </div>
+        
+        <a href="certificate.html" class="btn">Go to Certificate Page</a>
+        <a href="profile.html" class="btn" style="margin-left: 1rem;">Go to Profile Page</a>
+    </div>
+
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

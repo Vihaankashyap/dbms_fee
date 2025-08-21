@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Authentication - KnowledgeNest</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .fix-container {
+            max-width: 600px;
+            margin: 5rem auto;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .fix-title {
+            color: var(--main-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .fix-description {
+            font-size: 1.6rem;
+            color: var(--light-color);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        .fix-button {
+            background: var(--main-color);
+            color: white;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin: 1rem;
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+        }
+        
+        .fix-button:hover {
+            background: var(--orange);
+            transform: translateY(-0.2rem);
+        }
+        
+        .danger-button {
+            background: #dc3545;
+        }
+        
+        .danger-button:hover {
+            background: #c82333;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="fix-container">
+    <h1 class="fix-title">🔧 Fix Authentication Issue</h1>
+    
+    <p class="fix-description">
+        It looks like there's an authentication issue where user data exists in the browser 
+        but isn't properly synced with the database. Let's fix this!
+    </p>
+    
+    <div id="currentStatus" style="background: #f8f9fa; padding: 1rem; border-radius: 0.5rem; margin: 2rem 0; font-family: monospace;">
+        Loading current status...
+    </div>
+    
+    <div class="success-message" id="successMessage">
+        Authentication data has been cleared successfully!
+    </div>
+    
+    <button class="fix-button danger-button" onclick="clearAndFix()">
+        🗑️ Clear Invalid Data & Start Fresh
+    </button>
+    
+    <button class="fix-button" onclick="goToRegister()">
+        📝 Go to Register
+    </button>
+    
+    <button class="fix-button" onclick="goToLogin()">
+        🔑 Go to Login
+    </button>
+    
+    <button class="fix-button" onclick="goToDebug()">
+        🔍 Advanced Debug
+    </button>
+</div>
+
+<script src="api.js"></script>
+<script src="clear-auth.js"></script>
+
+<script>
+function updateStatus() {
+    const userData = localStorage.getItem('user_data');
+    const token = localStorage.getItem('access_token');
+    
+    let status = 'Current Authentication Status:\n\n';
+    status += `• Has Token: ${!!token}\n`;
+    status += `• Has User Data: ${!!userData}\n`;
+    
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            status += `• User Name: ${user.name || 'N/A'}\n`;
+            status += `• User Email: ${user.email || 'N/A'}\n`;
+            status += `• User Role: ${user.role || 'N/A'}\n`;
+            
+            if (userData && !token) {
+                status += '\n⚠️ ISSUE DETECTED: User data exists but no authentication token!';
+            }
+        } catch (error) {
+            status += `\n❌ ERROR: Corrupted user data - ${error.message}`;
+        }
+    } else {
+        status += '\n✅ No user data (guest mode)';
+    }
+    
+    document.getElementById('currentStatus').textContent = status;
+}
+
+function clearAndFix() {
+    if (confirm('This will clear all authentication data and log you out. Continue?')) {
+        // Clear all authentication data
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user_data');
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('user_data');
+        
+        // Clear any cookies
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+        
+        // Update status
+        updateStatus();
+        
+        // Auto-redirect to login after 3 seconds
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 3000);
+    }
+}
+
+function goToRegister() {
+    window.location.href = 'register.html';
+}
+
+function goToLogin() {
+    window.location.href = 'login.html';
+}
+
+function goToDebug() {
+    window.location.href = 'debug-auth.html';
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateStatus();
+});
+</script>
+
+</body>
+</html>

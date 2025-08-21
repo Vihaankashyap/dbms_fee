@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = 'http://localhost:5004/api';
 
 // API Client Class
 class APIClient {
@@ -130,6 +130,22 @@ class APIClient {
     async getRecentActivity() {
         return await this.request('/analytics/activity');
     }
+
+    async getRealTimeAnalytics() {
+        return await this.request('/analytics/real-time');
+    }
+
+    async getUsersAnalytics() {
+        return await this.request('/analytics/users');
+    }
+
+    async getCourseProgressAnalytics() {
+        return await this.request('/analytics/course-progress');
+    }
+
+    async getProgressTrends() {
+        return await this.request('/analytics/progress-trends');
+    }
 }
 
 // Create global API client instance
@@ -142,7 +158,7 @@ class UIHelpers {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message message-${type}`;
         messageDiv.textContent = message;
-        
+
         // Style the message
         messageDiv.style.cssText = `
             position: fixed;
@@ -179,7 +195,7 @@ class UIHelpers {
 
     static showLoading(show = true) {
         let loader = document.getElementById('global-loader');
-        
+
         if (show && !loader) {
             loader = document.createElement('div');
             loader.id = 'global-loader';
@@ -196,7 +212,7 @@ class UIHelpers {
                 align-items: center;
                 z-index: 9999;
             `;
-            
+
             const spinner = loader.querySelector('.spinner');
             spinner.style.cssText = `
                 width: 50px;
@@ -206,7 +222,7 @@ class UIHelpers {
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
             `;
-            
+
             // Add CSS animation
             if (!document.getElementById('spinner-style')) {
                 const style = document.createElement('style');
@@ -219,7 +235,7 @@ class UIHelpers {
                 `;
                 document.head.appendChild(style);
             }
-            
+
             document.body.appendChild(loader);
         } else if (!show && loader) {
             loader.remove();

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Real-time Analytics - KnowledgeNest</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+   <link rel="stylesheet" href="style.css">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+   <style>
+      .analytics-container {
+         padding: 2rem;
+         max-width: 1400px;
+         margin: 0 auto;
+      }
+      
+      .analytics-header {
+         background: linear-gradient(135deg, var(--main-color), var(--orange));
+         border-radius: 1rem;
+         padding: 2rem;
+         color: white;
+         margin-bottom: 2rem;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+      
+      .live-indicator {
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+      }
+      
+      .live-dot {
+         width: 10px;
+         height: 10px;
+         background: #00ff00;
+         border-radius: 50%;
+         animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+         0% { opacity: 1; }
+         50% { opacity: 0.5; }
+         100% { opacity: 1; }
+      }
+      
+      .stats-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+         gap: 2rem;
+         margin-bottom: 3rem;
+      }
+      
+      .stat-card {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+         position: relative;
+         overflow: hidden;
+      }
+      
+      .stat-card::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 4px;
+         background: linear-gradient(90deg, var(--main-color), var(--orange));
+      }
+      
+      .stat-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 1rem;
+      }
+      
+      .stat-icon {
+         font-size: 2rem;
+         color: var(--main-color);
+      }
+      
+      .stat-trend {
+         font-size: 1.2rem;
+         padding: 0.3rem 0.8rem;
+         border-radius: 1rem;
+         font-weight: bold;
+      }
+      
+      .trend-up {
+         background: #d4edda;
+         color: #155724;
+      }
+      
+      .trend-down {
+         background: #f8d7da;
+         color: #721c24;
+      }
+      
+      .stat-number {
+         font-size: 3rem;
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 0.5rem;
+      }
+      
+      .stat-label {
+         color: var(--light-color);
+         font-size: 1.4rem;
+      }
+      
+      .charts-grid {
+         display: grid;
+         grid-template-columns: 2fr 1fr;
+         gap: 2rem;
+         margin-bottom: 3rem;
+      }
+      
+      .chart-card {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+      }
+      
+      .chart-title {
+         font-size: 1.8rem;
+         color: var(--black);
+         margin-bottom: 1.5rem;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+      
+      .refresh-btn {
+         background: var(--main-color);
+         color: white;
+         border: none;
+         padding: 0.5rem 1rem;
+         border-radius: 0.5rem;
+         cursor: pointer;
+         font-size: 1.2rem;
+      }
+      
+      .activity-feed {
+         max-height: 400px;
+         overflow-y: auto;
+      }
+      
+      .activity-item {
+         display: flex;
+         align-items: center;
+         padding: 1rem;
+         border-bottom: 0.1rem solid var(--light-color);
+         transition: background 0.3s ease;
+      }
+      
+      .activity-item:hover {
+         background: #f8f9fa;
+      }
+      
+      .activity-item.new {
+         background: #e8f5e8;
+         animation: fadeIn 0.5s ease;
+      }
+      
+      @keyframes fadeIn {
+         from { opacity: 0; transform: translateX(-20px); }
+         to { opacity: 1; transform: translateX(0); }
+      }
+      
+      .activity-icon {
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin-right: 1rem;
+         color: white;
+      }
+      
+      .activity-login { background: #28a745; }
+      .activity-register { background: #007bff; }
+      .activity-enrollment { background: #ffc107; color: #000; }
+      .activity-completion { background: #17a2b8; }
+      .activity-progress { background: #6f42c1; }
+      
+      .course-progress-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+         gap: 2rem;
+         margin-top: 2rem;
+      }
+      
+      .course-progress-card {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+         position: relative;
+      }
+      
+      .course-progress-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 1.5rem;
+      }
+      
+      .course-title {
+         font-size: 1.6rem;
+         font-weight: bold;
+         color: var(--black);
+      }
+      
+      .enrollment-count {
+         background: var(--main-color);
+         color: white;
+         padding: 0.3rem 0.8rem;
+         border-radius: 1rem;
+         font-size: 1.2rem;
+      }
+      
+      .progress-overview {
+         margin-bottom: 1.5rem;
+      }
+      
+      .progress-stat {
+         display: flex;
+         justify-content: space-between;
+         margin-bottom: 0.5rem;
+         font-size: 1.4rem;
+      }
+      
+      .progress-bar-container {
+         width: 100%;
+         height: 1rem;
+         background: var(--light-color);
+         border-radius: 0.5rem;
+         overflow: hidden;
+         margin-bottom: 1rem;
+      }
+      
+      .progress-bar-fill {
+         height: 100%;
+         background: linear-gradient(90deg, var(--main-color), var(--orange));
+         border-radius: 0.5rem;
+         transition: width 0.3s ease;
+         position: relative;
+      }
+      
+      .progress-bar-fill::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+         animation: shimmer 2s infinite;
+      }
+      
+      @keyframes shimmer {
+         0% { transform: translateX(-100%); }
+         100% { transform: translateX(100%); }
+      }
+      
+      .recent-progress {
+         font-size: 1.2rem;
+         color: var(--light-color);
+      }
+      
+      .progress-update {
+         animation: pulse-green 1s ease;
+      }
+      
+      @keyframes pulse-green {
+         0% { background-color: transparent; }
+         50% { background-color: rgba(40, 167, 69, 0.1); }
+         100% { background-color: transparent; }
+      }
+      
+      .activity-content {
+         flex: 1;
+      }
+      
+      .activity-title {
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 0.3rem;
+      }
+      
+      .activity-time {
+         font-size: 1.2rem;
+         color: var(--light-color);
+      }
+      
+      .data-table {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+         overflow-x: auto;
+      }
+      
+      .table {
+         width: 100%;
+         border-collapse: collapse;
+      }
+      
+      .table th,
+      .table td {
+         padding: 1rem;
+         text-align: left;
+         border-bottom: 0.1rem solid var(--light-color);
+      }
+      
+      .table th {
+         background: #f8f9fa;
+         font-weight: bold;
+         color: var(--black);
+      }
+      
+      .status-badge {
+         padding: 0.3rem 0.8rem;
+         border-radius: 1rem;
+         font-size: 1.2rem;
+         font-weight: bold;
+      }
+      
+      .status-active {
+         background: #d4edda;
+         color: #155724;
+      }
+      
+      .status-inactive {
+         background: #f8d7da;
+         color: #721c24;
+      }
+      
+      .progress-sidebar {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 1.5rem;
+         margin-top: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+      }
+      
+      .sidebar-progress-item {
+         margin-bottom: 1.5rem;
+         padding-bottom: 1rem;
+         border-bottom: 0.1rem solid var(--light-color);
+      }
+      
+      .sidebar-progress-item:last-child {
+         border-bottom: none;
+         margin-bottom: 0;
+      }
+      
+      .progress-label {
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+         font-size: 1.2rem;
+         color: var(--light-color);
+         margin-bottom: 0.5rem;
+      }
+      
+      .progress-value {
+         font-size: 1.8rem;
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 0.5rem;
+      }
+      
+      .progress-value.small {
+         font-size: 1.2rem;
+         font-weight: normal;
+      }
+      
+      .mini-progress-bar {
+         width: 100%;
+         height: 0.4rem;
+         background: var(--light-color);
+         border-radius: 0.2rem;
+         overflow: hidden;
+      }
+      
+      .mini-progress-fill {
+         height: 100%;
+         background: linear-gradient(90deg, var(--main-color), var(--orange));
+         border-radius: 0.2rem;
+         transition: width 0.5s ease;
+         position: relative;
+      }
+      
+      .mini-progress-fill::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+         animation: shimmer 2s infinite;
+      }
+      
+      .navbar a.active {
+         background: var(--main-color);
+         color: white;
+      }
+
+      @media (max-width: 768px) {
+         .analytics-container {
+            padding: 1rem;
+         }
+         
+         .charts-grid {
+            grid-template-columns: 1fr;
+         }
+         
+         .analytics-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+         }
+         
+         .progress-sidebar {
+            margin-top: 1rem;
+         }
+      }
+   </style>
+</head>
+<body>
+
+<header class="header">
+   <section class="flex">
+      <a href="home.html" class="logo">KnowledgeNest</a>
+      <img src="images/logo-1.jpeg" alt="Logo" style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="Admin">
+         <h3 id="headerProfileName" class="name">Admin</h3>
+         <p id="headerProfileRole" class="role">admin</p>
+         <a href="profile.html" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="profile.html" class="option-btn">profile</a>
+            <a href="#" class="option-btn" onclick="AuthHelper.logout()">logout</a>
+         </div>
+      </div>
+   </section>
+</header>
+
+<section class="analytics-container">
+   <!-- Analytics Header -->
+   <div class="analytics-header">
+      <div>
+         <h1>📊 Real-time Analytics Dashboard</h1>
+         <p>Live data updates every 5 seconds</p>
+      </div>
+      <div class="live-indicator">
+         <div class="live-dot"></div>
+         <span>LIVE</span>
+      </div>
+   </div>
+
+   <!-- Statistics Grid -->
+   <div class="stats-grid">
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-trend trend-up" id="usersTrend">+12%</div>
+         </div>
+         <div class="stat-number" id="totalUsers">0</div>
+         <div class="stat-label">Total Users</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="stat-trend trend-up" id="coursesTrend">+8%</div>
+         </div>
+         <div class="stat-number" id="totalCourses">0</div>
+         <div class="stat-label">Total Courses</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-trend trend-up" id="enrollmentsTrend">+25%</div>
+         </div>
+         <div class="stat-number" id="totalEnrollments">0</div>
+         <div class="stat-label">Total Enrollments</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-trend trend-up" id="completionsTrend">+15%</div>
+         </div>
+         <div class="stat-number" id="totalCompletions">0</div>
+         <div class="stat-label">Course Completions</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-trend trend-up" id="progressTrend">+3%</div>
+         </div>
+         <div class="stat-number" id="avgProgress">0%</div>
+         <div class="stat-label">Avg Progress</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-header">
+            <div class="stat-icon">
+               <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-trend trend-up" id="activeTrend">+5%</div>
+         </div>
+         <div class="stat-number" id="activeUsers">0</div>
+         <div class="stat-label">Active Today</div>
+      </div>
+   </div>
+
+   <!-- Charts Grid -->
+   <div class="charts-grid">
+      <div class="chart-card">
+         <div class="chart-title">
+            Course Progress Trends
+            <button class="refresh-btn" onclick="refreshCharts()">
+               <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+         </div>
+         <canvas id="progressChart" width="400" height="200"></canvas>
+      </div>
+      
+      <div class="chart-card">
+         <div class="chart-title">Live Activity Feed</div>
+         <div class="activity-feed" id="activityFeed">
+            <div class="activity-item">
+               <div class="activity-icon activity-login">
+                  <i class="fas fa-sign-in-alt"></i>
+               </div>
+               <div class="activity-content">
+                  <div class="activity-title">Loading activities...</div>
+                  <div class="activity-time">Please wait</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Course Progress Section -->
+   <div class="data-table" style="margin-bottom: 3rem;">
+      <div class="chart-title">
+         Real-time Course Progress
+         <button class="refresh-btn" onclick="refreshCourseProgress()">
+            <i class="fas fa-sync-alt"></i> Refresh
+         </button>
+      </div>
+      <div class="course-progress-grid" id="courseProgressGrid">
+         <div style="text-align: center; padding: 2rem;">Loading course progress...</div>
+      </div>
+   </div>
+
+   <!-- User Data Table -->
+   <div class="data-table">
+      <div class="chart-title">
+         Recent Users
+         <button class="refresh-btn" onclick="refreshUserTable()">
+            <i class="fas fa-sync-alt"></i> Refresh
+         </button>
+      </div>
+      <table class="table">
+         <thead>
+            <tr>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Email</th>
+               <th>Role</th>
+               <th>Status</th>
+               <th>Joined</th>
+            </tr>
+         </thead>
+         <tbody id="userTableBody">
+            <tr>
+               <td colspan="6" style="text-align: center;">Loading users...</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js"></script>
+<script src="auth-helper.js"></script>
+<script src="course-progress-analytics.js"></script>
+<script src="real-time-analytics.js"></script>
+
+<script>
+// Initialize course progress analytics when analytics is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for main analytics to initialize
+    setTimeout(() => {
+        if (window.analytics) {
+            window.analytics.courseProgress = new CourseProgressAnalytics(window.analytics);
+        }
+    }, 1000);
+});
+</script>
+
+</body>
+</html>

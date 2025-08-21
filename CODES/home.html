@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,298 +14,341 @@
    <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
 
-<header class="header">
-   
-   <section class="flex">
+   <header class="header">
 
-      <a href="home.html" class="logo">KnowledgeNest</a>
-      <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="Logo" style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+      <section class="flex">
+
+         <a href="home.html" class="logo">KnowledgeNest</a>
+         <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="Logo"
+            style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
 
 
-      <form action="search.html" method="post" class="search-form">
-         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
-         <button type="submit" class="fas fa-search"></button>
-      </form>
+         <form action="search.html" method="post" class="search-form">
+            <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+            <button type="submit" class="fas fa-search"></button>
+         </form>
 
-      <div class="icons">
-         <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="search-btn" class="fas fa-search"></div>
-         <div id="user-btn" class="fas fa-user"></div>
-         <div id="toggle-btn" class="fas fa-sun"></div>
+         <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <div id="toggle-btn" class="fas fa-sun"></div>
+         </div>
+
+         <div class="profile">
+            <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="Guest">
+            <h3 id="headerProfileName" class="name">Guest</h3>
+            <p id="headerProfileRole" class="role">visitor</p>
+            <a href="profile.html" class="btn">view profile</a>
+            <div class="flex-btn">
+               <a href="login.html" class="option-btn">login</a>
+               <a href="register.html" class="option-btn">register</a>
+            </div>
+         </div>
+
+      </section>
+
+   </header>
+
+   <div class="side-bar">
+
+      <div id="close-btn">
+         <i class="fas fa-times"></i>
       </div>
 
       <div class="profile">
-         <img src="https://www.billabonghighschool.com/wp-content/uploads/2024/06/Top-10-Qualities-a-Good-Student-Must-Have.jpg" class="image" alt="">
-         <h3 class="name">VIHAAN</h3>
-         <p class="role">student</p>
+         <img
+            src="data:image/jpeg;base64,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"
+            class="image" alt="">
+         <h3 class="name">Guest User</h3>
+         <p class="role">visitor</p>
          <a href="profile.html" class="btn">view profile</a>
-         <div class="flex-btn">
-            <a href="login.html" class="option-btn">login</a>
-            <a href="register.html" class="option-btn">register</a>
+      </div>
+
+      <nav class="navbar">
+         <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+         <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+         <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+         <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+         <a href="contact.html"><i class="fas fa-phone"></i><span>contact us</span></a>
+         <a href="certificate.html"><i class="fas fa-certificate"></i><span>Certificate</span></a>
+      </nav>
+
+   </div>
+
+   <section class="home-grid">
+
+      <h1 class="heading">quick options</h1>
+
+      <div class="box-container">
+
+         <div class="box">
+            <h3 class="title">likes and comments</h3>
+            <p class="likes">total likes : <span>25</span></p>
+            <title>Popping Likes Animation</title>
+            <style>
+               .like-container {
+                  position: relative;
+                  display: inline-block;
+               }
+
+               #like-btn {
+                  font-size: 1.5em;
+                  padding: 10px;
+                  cursor: pointer;
+               }
+
+               .like-animation {
+                  position: absolute;
+                  bottom: 50px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+               }
+
+               .like {
+                  font-size: 1.5em;
+                  opacity: 0;
+                  transform: translateY(0);
+                  animation: pop-up 1s ease-out forwards;
+               }
+
+               @keyframes pop-up {
+                  0% {
+                     opacity: 0;
+                     transform: translateY(20px);
+                  }
+
+                  50% {
+                     opacity: 1;
+                  }
+
+                  100% {
+                     opacity: 0;
+                     transform: translateY(-50px);
+                  }
+               }
+            </style>
+            </head>
+
+            <body>
+
+               <div class="like-container">
+                  <button id="like-btn">❤️ Like</button>
+                  <div class="like-animation" id="like-animation"></div>
+               </div>
+
+               <script>
+                  const likeButton = document.getElementById('like-btn');
+                  const likeAnimationContainer = document.getElementById('like-animation');
+
+                  likeButton.addEventListener('click', () => {
+                     const like = document.createElement('span');
+                     like.textContent = '❤️';
+                     like.classList.add('like');
+                     likeAnimationContainer.appendChild(like);
+
+                     // Remove the like element after the animation is done
+                     like.addEventListener('animationend', () => {
+                        likeAnimationContainer.removeChild(like);
+                     });
+                  });
+               </script>
+
+               <a href="" class="inline-btn">view likes</a>
+               <p class="likes">total comments : <span>12</span></p>
+               <a href="" class="inline-btn">view comments</a>
+               <p class="likes">saved playlists : <span>4</span></p>
+               <a href="playlist.html" class="inline-btn">view playlists</a> <!--playlist-->
          </div>
+
+         <div class="box">
+            <h3 class="title">top categories</h3>
+            <div class="flex">
+               <a href="https://www.geeksforgeeks.org/web-development/"><i
+                     class="fas fa-code"></i><span>development</span></a>
+               <a
+                  href="https://en.wikipedia.org/wiki/Business#:~:text=Business%20is%20the%20practice%20of,such%20as%20goods%20and%20services."><i
+                     class="fas fa-chart-simple"></i><span>business</span></a>
+               <a
+                  href="https://www.interaction-design.org/literature/topics/graphic-design#:~:text=Graphic%20design%20is%20a%20craft,to%20optimize%20the%20user%20experience."><i
+                     class="fas fa-pen"></i><span>design</span></a>
+               <a
+                  href="https://www.ama.org/the-definition-of-marketing-what-is-marketing/#:~:text=Marketing%20is%20the%20activity%2C%20set,partners%2C%20and%20society%20at%20large."><i
+                     class="fas fa-chart-line"></i><span>marketing</span></a>
+               <a href="https://open.spotify.com/playlist/60SDUP1ncGWHFrmsuhAlR8"><i
+                     class="fas fa-music"></i><span>music</span></a>
+               <a href="https://en.wikipedia.org/wiki/Photography"><i
+                     class="fas fa-camera"></i><span>photography</span></a>
+               <a href="https://www.britannica.com/technology/software"><i
+                     class="fas fa-cog"></i><span>software</span></a>
+               <a href="https://en.wikipedia.org/wiki/Science"><i class="fas fa-vial"></i><span>science</span></a>
+            </div>
+         </div>
+
+         <div class="box">
+            <h3 class="title">popular topics</h3>
+            <div class="flex">
+               <a href="https://www.youtube.com/watch?v=HcOc7P5BMi4"><i class="fab fa-html5"></i><span>HTML</span></a>
+               <a href="https://www.youtube.com/watch?v=ESnrn1kAD4E"><i class="fab fa-css3"></i><span>CSS</span></a>
+               <a href="https://www.youtube.com/watch?v=VlPiVmYuoqw"><i
+                     class="fab fa-js"></i><span>javascript</span></a>
+               <a href="https://www.youtube.com/watch?v=eILUmCJhl64"><i class="fab fa-react"></i><span>react</span></a>
+               <a href="https://www.youtube.com/watch?v=1SnPKhCdlsU"><i class="fab fa-php"></i><span>PHP</span></a>
+               <a href="https://www.youtube.com/watch?v=vpAJ0s5S2t0"><i
+                     class="fab fa-bootstrap"></i><span>bootstrap</span></a>
+            </div>
+         </div>
+
+         <div class="box">
+            <h3 class="title">become a tutor</h3>
+            <p class="tutor">Share your knowledge, inspire growth, and make a difference, become a tutor today!</p>
+            <a href="register.html" class="inline-btn">get started</a>
+         </div>
+
+      </div>
+
+   </section>
+   <section class="courses">
+
+      <h1 class="heading">our courses</h1>
+
+      <div class="box-container">
+
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>Apna College</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/l1EssrLxt7E/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBeHsL0IAwmp4nDP4YTVkzvG9Z2OA"
+                  alt="">
+               <span>58 videos</span>
+            </div>
+            <h3 class="title">Web Development Course</h3>
+            <a href="https://www.youtube.com/playlist?list=PLfqMhTWNBTe3H6c9OGXb5_6wcc1Mca52n" class="inline-btn">view
+               playlist</a> <!--playlist-->
+         </div>
+
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>Coding Shuttle by Anuj Bhaiya</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/PVBqZRAOZL8/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCdhotMJUTPIC3ndKEgbCU2ZqAeyQ"
+                  alt="">
+               <span>21 videos</span>
+            </div>
+            <h3 class="title">CSS tutorial</h3>
+            <a href="https://www.youtube.com/playlist?list=PLhzIaPMgkbxBk9-drEC0MBPqEOXpVlwY4" class="inline-btn">view
+               playlist</a> <!--playlist-->
+         </div>
+
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>WsCube Tech</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/kXVq6UHcuLw/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDhAB1vjz-vPZEgxGwpn9yn9XpbVA"
+                  alt="">
+               <span>38 videos</span>
+            </div>
+            <h3 class="title">JS tutorial</h3>
+            <a href="https://www.youtube.com/playlist?list=PLjVLYmrlmjGdY5qitPBFoOpDzfHaBwie7" class="inline-btn">view
+               playlist</a> <!--playlist-->
+         </div>
+
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>Neeraj's Lab</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/DUiYVJIVNcA/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCEXRjOnAHCUbe6pibck5VBOLl7Og"
+                  alt="">
+               <span>10 videos</span>
+            </div>
+            <h3 class="title">Boostrap tutorial</h3>
+            <a href="https://www.youtube.com/playlist?list=PLF-YWK8z6-B54HXYWxPF1gyRNXhl-yRp0" class="inline-btn">view
+               playlist</a> <!--playlist-->
+         </div>
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>WsCube Tech</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/kunkYTKFNtI/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDCb06Mq6KMMjHkan7tKTpXMj7HIQ"
+                  alt="">
+               <span>136 videos</span>
+            </div>
+            <h3 class="title">Digital Marketing Courses</h3>
+            <a href="https://www.youtube.com/playlist?list=PLjVLYmrlmjGejs6AFv8lgJj3t47ScLuvw" class="inline-btn">view
+               playlist</a> <!--playlist-->
+         </div>
+         <div class="box">
+            <div class="tutor">
+               <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
+               <div class="info">
+                  <h3>Apna College</h3>
+               </div>
+            </div>
+            <div class="thumb">
+               <img
+                  src="https://i.ytimg.com/vi/VTLCoHnyACE/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC8fQQIljrUqn0NzkqX1iiAdw9Dfg"
+                  alt="">
+               <span>40 videos</span>
+            </div>
+            <h3 class="title">DSA Series</h3>
+            <a href="https://www.youtube.com/watch?v=VTLCoHnyACE&list=PLfqMhTWNBTe137I_EPQd34TsgV6IO55pt"
+               class="inline-btn">view playlist</a> <!--playlist-->
+         </div>
+
+      </div>
+
+      <div class="more-btn">
+         <a href="courses.html" class="inline-option-btn">view all courses</a>
       </div>
 
    </section>
 
-</header>   
+   <footer class="footer">
 
-<div class="side-bar">
+      &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
 
-   <div id="close-btn">
-      <i class="fas fa-times"></i>
-   </div>
+   </footer>
 
-   <div class="profile">
-      <img src="data:image/jpeg;base64,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" class="image" alt="">
-      <h3 class="name">VIHAAN</h3>
-      <p class="role">student</p>
-      <a href="profile.html" class="btn">view profile</a>
-   </div>
+   <!-- API and custom js file links -->
+   <script src="api.js"></script>
+   <script src="script.js"></script>
+   <script src="clear-auth.js"></script>
+   <script src="sync-user.js"></script>
+   <script src="auth-helper.js"></script>
+   <script src="profile-updater.js"></script>
 
-   <nav class="navbar">
-      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
-      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
-      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
-      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-      <a href="contact.html"><i class="fas fa-phone"></i><span>contact us</span></a>
-      <a href="certificate.html"><i class="fas fa-certificate"></i><span>Certificate</span></a>
-   </nav>
 
-</div>
-
-<section class="home-grid">
-
-   <h1 class="heading">quick options</h1>
-
-   <div class="box-container">
-
-      <div class="box">
-         <h3 class="title">likes and comments</h3>
-         <p class="likes">total likes : <span>25</span></p>
-         <title>Popping Likes Animation</title>
-  <style>
-    .like-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    #like-btn {
-      font-size: 1.5em;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .like-animation {
-      position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .like {
-      font-size: 1.5em;
-      opacity: 0;
-      transform: translateY(0);
-      animation: pop-up 1s ease-out forwards;
-    }
-
-    @keyframes pop-up {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-50px);
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="like-container">
-    <button id="like-btn">❤️ Like</button>
-    <div class="like-animation" id="like-animation"></div>
-  </div>
-
-  <script>
-    const likeButton = document.getElementById('like-btn');
-    const likeAnimationContainer = document.getElementById('like-animation');
-
-    likeButton.addEventListener('click', () => {
-      const like = document.createElement('span');
-      like.textContent = '❤️';
-      like.classList.add('like');
-      likeAnimationContainer.appendChild(like);
-
-      // Remove the like element after the animation is done
-      like.addEventListener('animationend', () => {
-        likeAnimationContainer.removeChild(like);
-      });
-    });
-  </script>
-
-         <a href="" class="inline-btn">view likes</a>
-         <p class="likes">total comments : <span>12</span></p>
-         <a href="" class="inline-btn">view comments</a>
-         <p class="likes">saved playlists : <span>4</span></p>
-         <a href="playlist.html" class="inline-btn">view playlists</a> <!--playlist-->
-      </div>
-
-      <div class="box">
-         <h3 class="title">top categories</h3>
-         <div class="flex">
-            <a href="https://www.geeksforgeeks.org/web-development/"><i class="fas fa-code"></i><span>development</span></a>
-            <a href="https://en.wikipedia.org/wiki/Business#:~:text=Business%20is%20the%20practice%20of,such%20as%20goods%20and%20services."><i class="fas fa-chart-simple"></i><span>business</span></a>
-            <a href="https://www.interaction-design.org/literature/topics/graphic-design#:~:text=Graphic%20design%20is%20a%20craft,to%20optimize%20the%20user%20experience."><i class="fas fa-pen"></i><span>design</span></a>
-            <a href="https://www.ama.org/the-definition-of-marketing-what-is-marketing/#:~:text=Marketing%20is%20the%20activity%2C%20set,partners%2C%20and%20society%20at%20large."><i class="fas fa-chart-line"></i><span>marketing</span></a>
-            <a href="https://open.spotify.com/playlist/60SDUP1ncGWHFrmsuhAlR8"><i class="fas fa-music"></i><span>music</span></a>
-            <a href="https://en.wikipedia.org/wiki/Photography"><i class="fas fa-camera"></i><span>photography</span></a>
-            <a href="https://www.britannica.com/technology/software"><i class="fas fa-cog"></i><span>software</span></a>
-            <a href="https://en.wikipedia.org/wiki/Science"><i class="fas fa-vial"></i><span>science</span></a>
-         </div>
-      </div>
-
-      <div class="box">
-         <h3 class="title">popular topics</h3>
-         <div class="flex">
-            <a href="https://www.youtube.com/watch?v=HcOc7P5BMi4"><i class="fab fa-html5"></i><span>HTML</span></a>
-            <a href="https://www.youtube.com/watch?v=ESnrn1kAD4E"><i class="fab fa-css3"></i><span>CSS</span></a>
-            <a href="https://www.youtube.com/watch?v=VlPiVmYuoqw"><i class="fab fa-js"></i><span>javascript</span></a>
-            <a href="https://www.youtube.com/watch?v=eILUmCJhl64"><i class="fab fa-react"></i><span>react</span></a>
-            <a href="https://www.youtube.com/watch?v=1SnPKhCdlsU"><i class="fab fa-php"></i><span>PHP</span></a>
-            <a href="https://www.youtube.com/watch?v=vpAJ0s5S2t0"><i class="fab fa-bootstrap"></i><span>bootstrap</span></a>
-         </div>
-      </div>
-
-      <div class="box">
-         <h3 class="title">become a tutor</h3>
-         <p class="tutor">Share your knowledge, inspire growth, and make a difference, become a tutor today!</p>
-         <a href="register.html" class="inline-btn">get started</a>
-      </div>
-
-   </div>
-
-</section>
-<section class="courses">
-
-   <h1 class="heading">our courses</h1>
-
-   <div class="box-container">
-
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>Apna College</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/l1EssrLxt7E/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBeHsL0IAwmp4nDP4YTVkzvG9Z2OA" alt="">
-            <span>58 videos</span>
-         </div>
-         <h3 class="title">Web Development Course</h3>
-         <a href="https://www.youtube.com/playlist?list=PLfqMhTWNBTe3H6c9OGXb5_6wcc1Mca52n" class="inline-btn">view playlist</a> <!--playlist-->
-      </div>
-
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>Coding Shuttle by Anuj Bhaiya</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/PVBqZRAOZL8/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCdhotMJUTPIC3ndKEgbCU2ZqAeyQ" alt="">
-            <span>21 videos</span>
-         </div>
-         <h3 class="title">CSS tutorial</h3>
-         <a href="https://www.youtube.com/playlist?list=PLhzIaPMgkbxBk9-drEC0MBPqEOXpVlwY4" class="inline-btn">view playlist</a> <!--playlist-->
-      </div>
-
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>WsCube Tech</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/kXVq6UHcuLw/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDhAB1vjz-vPZEgxGwpn9yn9XpbVA" alt="">
-            <span>38 videos</span>
-         </div>
-         <h3 class="title">JS tutorial</h3>
-         <a href="https://www.youtube.com/playlist?list=PLjVLYmrlmjGdY5qitPBFoOpDzfHaBwie7" class="inline-btn">view playlist</a>  <!--playlist-->
-      </div>
-
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>Neeraj's Lab</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/DUiYVJIVNcA/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCEXRjOnAHCUbe6pibck5VBOLl7Og" alt="">
-            <span>10 videos</span>
-         </div>
-         <h3 class="title">Boostrap tutorial</h3>
-         <a href="https://www.youtube.com/playlist?list=PLF-YWK8z6-B54HXYWxPF1gyRNXhl-yRp0" class="inline-btn">view playlist</a>  <!--playlist-->
-      </div>
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>WsCube Tech</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/kunkYTKFNtI/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDCb06Mq6KMMjHkan7tKTpXMj7HIQ" alt="">
-            <span>136 videos</span>
-         </div>
-         <h3 class="title">Digital Marketing Courses</h3>
-         <a href="https://www.youtube.com/playlist?list=PLjVLYmrlmjGejs6AFv8lgJj3t47ScLuvw" class="inline-btn">view playlist</a> <!--playlist-->
-      </div>
-      <div class="box">
-         <div class="tutor">
-            <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="">
-            <div class="info">
-               <h3>Apna College</h3>
-            </div>
-         </div>
-         <div class="thumb">
-            <img src="https://i.ytimg.com/vi/VTLCoHnyACE/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC8fQQIljrUqn0NzkqX1iiAdw9Dfg" alt="">
-            <span>40 videos</span>
-         </div>
-         <h3 class="title">DSA Series</h3>
-         <a href="https://www.youtube.com/watch?v=VTLCoHnyACE&list=PLfqMhTWNBTe137I_EPQd34TsgV6IO55pt" class="inline-btn">view playlist</a>  <!--playlist--> 
-      </div>
-
-   </div>
-
-   <div class="more-btn">
-      <a href="courses.html" class="inline-option-btn">view all courses</a>
-   </div>
-
-</section>
-
-<footer class="footer">
-
-    &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved! 
-
-</footer>
-
-<!-- custom js file link  -->
-<script src="script.js"></script>
-
-   
 </body>
+
 </html>

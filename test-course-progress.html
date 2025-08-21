@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Course Progress Analytics</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🎓 Course Progress Analytics Test</h1>
+    
+    <div class="test-section">
+        <h3>Course Progress API Test</h3>
+        <button onclick="testCourseProgressAPI()">Test Course Progress</button>
+        <div id="courseProgressResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Progress Trends API Test</h3>
+        <button onclick="testProgressTrendsAPI()">Test Progress Trends</button>
+        <div id="progressTrendsResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Database Verification</h3>
+        <button onclick="showDatabaseInfo()">Show Database Info</button>
+        <div id="databaseInfo"></div>
+    </div>
+
+    <script src="api.js"></script>
+    
+    <script>
+        async function testCourseProgressAPI() {
+            const resultDiv = document.getElementById('courseProgressResult');
+            resultDiv.innerHTML = '<p>Testing course progress API...</p>';
+            
+            try {
+                // First login as admin
+                await api.login({
+                    email: 'admin@knowledgenest.com',
+                    password: 'admin123'
+                });
+                
+                const response = await api.getCourseProgressAnalytics();
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ Course Progress API working!</p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ API test failed: ${error.message}</p>`;
+            }
+        }
+        
+        async function testProgressTrendsAPI() {
+            const resultDiv = document.getElementById('progressTrendsResult');
+            resultDiv.innerHTML = '<p>Testing progress trends API...</p>';
+            
+            try {
+                const response = await api.getProgressTrends();
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ Progress Trends API working!</p>
+                    <pre>${JSON.stringify(response, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ API test failed: ${error.message}</p>`;
+            }
+        }
+        
+        function showDatabaseInfo() {
+            const resultDiv = document.getElementById('databaseInfo');
+            resultDiv.innerHTML = `
+                <h4>Expected Database Structure:</h4>
+                <pre>
+Courses Table:
+- id: 1, title: "Complete Web Development Bootcamp"
+- id: 2, title: "JavaScript Mastery Course"  
+- id: 3, title: "Python for Data Science"
+
+Enrollments Table:
+- Multiple enrollments with progress_percentage
+- Some completed (progress = 100%)
+- Various enrollment dates
+
+User Activities Table:
+- Login, enrollment, completion activities
+- Recent timestamps for real-time feed
+                </pre>
+                
+                <p><strong>To verify:</strong> Check the analytics dashboard at 
+                <a href="analytics-dashboard.html">analytics-dashboard.html</a></p>
+            `;
+        }
+    </script>
+</body>
+</html>

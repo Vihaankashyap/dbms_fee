@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Course - Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .course-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .course-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .course-info {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .complete-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .complete-btn:hover {
+            background: #218838;
+        }
+        .completed {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .completed .complete-btn {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .rating {
+            margin: 10px 0;
+        }
+        .rating select {
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .review {
+            margin: 10px 0;
+        }
+        .review textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Complete Course - Test Page</h1>
+        <p>This page allows you to mark courses as completed for testing the certificate feature.</p>
+        
+        <div id="loginPrompt" style="display: none;">
+            <p>Please <a href="login.html">login</a> to view your courses.</p>
+        </div>
+        
+        <div id="coursesContainer">
+            <p>Loading your enrolled courses...</p>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #e9ecef; border-radius: 5px;">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Login to your account</li>
+                <li>Enroll in a course first (if not already enrolled)</li>
+                <li>Use the "Complete Course" button to mark it as finished</li>
+                <li>Add a rating and review (optional)</li>
+                <li>Visit the <a href="certificate.html">Certificate page</a> to see your certificate</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        let userCourses = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!UIHelpers.isLoggedIn()) {
+                document.getElementById('coursesContainer').style.display = 'none';
+                document.getElementById('loginPrompt').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await api.getMyCourses();
+                userCourses = response.courses;
+                displayCourses();
+            } catch (error) {
+                document.getElementById('coursesContainer').innerHTML = `
+                    <div class="error">Error loading courses: ${error.message}</div>
+                `;
+            }
+        });
+
+        function displayCourses() {
+            const container = document.getElementById('coursesContainer');
+            
+            if (userCourses.length === 0) {
+                container.innerHTML = `
+                    <div class="info">
+                        <p>You haven't enrolled in any courses yet.</p>
+                        <p><a href="courses.html">Browse and enroll in courses</a> to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = userCourses.map(course => {
+                const isCompleted = course.enrollment && course.enrollment.completed_at;
+                const completionDate = isCompleted ? new Date(course.enrollment.completed_at).toLocaleDateString() : null;
+                
+                return `
+                    <div class="course-card ${isCompleted ? 'completed' : ''}">
+                        <div class="course-title">${course.title}</div>
+                        <div class="course-info">
+                            <strong>Category:</strong> ${course.category}<br>
+                            <strong>Instructor:</strong> ${course.instructor_name}<br>
+                            <strong>Progress:</strong> ${Math.round(course.enrollment.progress_percentage)}%<br>
+                            ${isCompleted ? `<strong>Completed:</strong> ${completionDate}<br>` : ''}
+                            ${course.enrollment.rating ? `<strong>Rating:</strong> ${course.enrollment.rating}/5 stars<br>` : ''}
+                        </div>
+                        
+                        ${!isCompleted ? `
+                            <div class="rating">
+                                <label>Rating (optional):</label>
+                                <select id="rating-${course.id}">
+                                    <option value="">Select rating</option>
+                                    <option value="5">5 - Excellent</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="1">1 - Poor</option>
+                                </select>
+                            </div>
+                            
+                            <div class="review">
+                                <label>Review (optional):</label>
+                                <textarea id="review-${course.id}" placeholder="Share your thoughts about this course..." rows="3"></textarea>
+                            </div>
+                            
+                            <button class="complete-btn" onclick="completeCourse(${course.id})">
+                                Complete Course
+                            </button>
+                        ` : `
+                            <button class="complete-btn" disabled>
+                                ✅ Completed
+                            </button>
+                            <a href="certificate.html" style="margin-left: 10px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+                                View Certificate
+                            </a>
+                        `}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function completeCourse(courseId) {
+            const ratingElement = document.getElementById(`rating-${courseId}`);
+            const reviewElement = document.getElementById(`review-${courseId}`);
+            const resultDiv = document.getElementById('result');
+            
+            const rating = ratingElement.value ? parseInt(ratingElement.value) : null;
+            const review = reviewElement.value.trim() || null;
+            
+            try {
+                resultDiv.innerHTML = '<div class="info">Completing course...</div>';
+                
+                const completionData = { course_id: courseId };
+                if (rating) completionData.rating = rating;
+                if (review) completionData.review = review;
+                
+                const response = await fetch(`${api.baseURL}/complete-course`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    body: JSON.stringify(completionData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>🎉 Course Completed Successfully!</h4>
+                            <p>Congratulations! You have completed the course.</p>
+                            <p><a href="certificate.html">Click here to view your certificate</a></p>
+                        </div>
+                    `;
+                    
+                    // Refresh the courses display
+                    setTimeout(async () => {
+                        const updatedResponse = await api.getMyCourses();
+                        userCourses = updatedResponse.courses;
+                        displayCourses();
+                    }, 1000);
+                    
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ Completion Failed</h4>
+                            <p>${data.error}</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Network Error</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

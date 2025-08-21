@@ -2,46 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate</title>
+    <title>Certificate - KnowledgeNest</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-image: url('https://t4.ftcdn.net/jpg/05/39/63/51/360_F_539635160_zUorrHfozZhsbbsKHoH0xODPrra3ZO7S.jpg');
-            background-size: cover;
-            background-position: center;
-            overflow: hidden;
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+        /* Certificate specific styles */
 
         .certificate {
-            width: 600px;
-            height: 450px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 70rem;
+            max-width: 90%;
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 3rem;
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.1);
             text-align: center;
             position: relative;
+            border: var(--border);
             animation: slideIn 1s ease-out;
         }
 
@@ -56,24 +39,25 @@
             }
         }
 
-        .header {
+        .cert-header {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .logo img {
-            width: 80px;
-            height: 80px;
+        .cert-logo img {
+            width: 8rem;
+            height: 8rem;
             border-radius: 50%;
+            object-fit: cover;
         }
 
-        h1 {
-            font-size: 40px;
-            color: #ff4b5c;
-            letter-spacing: 2px;
+        .cert-title {
+            font-size: 4rem;
+            color: var(--main-color);
+            letter-spacing: 0.2rem;
             margin: 0;
             animation: bounce 1s ease-out;
         }
@@ -90,18 +74,25 @@
             }
         }
 
-        p {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 20px;
+        .cert-text {
+            font-size: 1.8rem;
+            color: var(--light-color);
+            margin-bottom: 2rem;
         }
 
-        .name {
-            font-size: 32px;
-            color: #ff4b5c;
+        .student-name {
+            font-size: 3.2rem;
+            color: var(--main-color);
             font-weight: bold;
-            margin: 20px 0;
+            margin: 2rem 0;
             animation: nameFadeIn 1s ease-out;
+        }
+
+        .course-name {
+            font-size: 2.4rem;
+            color: var(--black);
+            font-weight: 600;
+            margin: 1rem 0;
         }
 
         @keyframes nameFadeIn {
@@ -115,16 +106,17 @@
             }
         }
 
-        .message {
+        .cert-message {
             font-style: italic;
-            color: #777;
-            margin-bottom: 30px;
+            color: var(--light-color);
+            margin-bottom: 3rem;
+            font-size: 1.6rem;
         }
 
-        .icon {
-            font-size: 50px;
-            color: gold;
-            margin: 20px 0;
+        .cert-icon {
+            font-size: 5rem;
+            color: var(--orange);
+            margin: 2rem 0;
             animation: rotateStar 2s infinite;
         }
 
@@ -137,114 +129,471 @@
             }
         }
 
-        .footer {
+        .cert-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            color: #333;
-            margin-top: 30px;
+            color: var(--black);
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
         }
 
-        .footer p {
-            font-size: 16px;
+        .cert-footer p {
+            font-size: 1.6rem;
+            margin: 0;
         }
 
-        .footer input {
-            font-size: 16px;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin: 5px;
-            width: 150px;
-            text-align: center;
-        }
-
-        .footer .button {
-            background-color: #ff4b5c;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
+        .cert-footer .btn {
+            background-color: var(--main-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            font-size: 1.6rem;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .footer .button:hover {
-            background-color: #ff2a3f;
+        .cert-footer .btn:hover {
+            background-color: var(--orange);
+            transform: translateY(-0.2rem);
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.1);
+            border: var(--border);
+        }
+
+        .login-prompt a {
+            color: var(--main-color);
+            font-weight: bold;
+        }
+
+        .no-certificates {
+            text-align: center;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.1);
+            border: var(--border);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                padding-left: 0 !important;
+                background-color: white !important;
+            }
+            .header, .side-bar {
+                display: none !important;
+            }
+            .certificate-section {
+                padding: 0 !important;
+                min-height: auto !important;
+            }
+            .certificate {
+                box-shadow: none !important;
+                border: 2px solid var(--main-color) !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+            .btn {
+                display: none !important;
+            }
         }
 
         /* Responsiveness */
+        @media (max-width: 991px) {
+            body {
+                padding-left: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             .certificate {
-                width: 90%;
-                height: auto;
-                padding: 15px;
+                padding: 2rem;
             }
 
-            h1 {
-                font-size: 28px;
+            .cert-title {
+                font-size: 3rem;
             }
 
-            .name {
-                font-size: 28px;
+            .student-name {
+                font-size: 2.8rem;
             }
 
-            .icon {
-                font-size: 40px;
+            .course-name {
+                font-size: 2rem;
             }
 
-            .footer {
+            .cert-icon {
+                font-size: 4rem;
+            }
+
+            .cert-footer {
                 flex-direction: column;
                 align-items: center;
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="certificate">
-        <div class="header">
-            <div class="logo">
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="home.html" class="logo">KnowledgeNest</a>
+      <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="Logo" style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+
+      <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="search-btn" class="fas fa-search"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="">
+         <h3 id="headerProfileName" class="name">Guest User</h3>
+         <p id="headerProfileRole" class="role">visitor</p>
+         <a href="profile.html" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="login.html" class="option-btn">login</a>
+            <a href="register.html" class="option-btn">register</a>
+         </div>
+      </div>
+
+   </section>
+
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img id="sidebarProfileImage" src="images/pic-1.jpg" class="image" alt="">
+      <h3 id="sidebarProfileName" class="name">Guest User</h3>
+      <p id="sidebarProfileRole" class="role">visitor</p>
+      <a href="profile.html" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+   </nav>
+
+</div>
+
+<section>
+
+    <h1 class="heading">certificate</h1>
+    <div id="loginPrompt" class="login-prompt" style="display: none;">
+        <h2>🎓 Certificate Portal</h2>
+        <p>Please <a href="login.html">login</a> to view your certificates</p>
+    </div>
+    
+    <div class="certificate" id="certificateContent">
+        <div class="cert-header">
+            <div class="cert-logo">
                 <img src="https://i.postimg.cc/rKxTWP3n/Whats-App-Image-2024-09-07-at-14-10-51-f33224d6.jpg" alt="KnowledgeNest Logo">
             </div>
-            <h1>CERTIFICATE</h1>
+            <h1 class="cert-title">CERTIFICATE</h1>
         </div>
-        <p>Proudly Presented to:</p>
-        <h2 class="name" id="name">[Name]</h2>
-        <p class="message">For your glorious performance of hilarity in every class.</p>
-        <p><strong>Successfully completed the course of</strong></p>
-        <div class="icon">
-            <span>&#9734;</span>
+        
+        <p class="cert-text">This is to certify that</p>
+        <h2 class="student-name" id="studentName">[Student Name]</h2>
+        <p class="cert-message">has successfully completed the course with excellence and dedication</p>
+        
+        <h3 class="course-name" id="courseName">[Course Name]</h3>
+        
+        <div class="cert-icon">
+            <i class="fas fa-award"></i>
         </div>
-        <div class="footer">
+        
+        <div class="cert-footer">
             <p>
-                Date: <input type="date" id="date-input">
+                <strong>Completion Date:</strong><br>
+                <span id="completionDate">[Date]</span>
             </p>
             <p>
-                Teacher's Signature: <span id="signature">KnowledgeNest</span>
+                <strong>Instructor:</strong><br>
+                <span id="instructorName">[Instructor]</span>
             </p>
         </div>
-        <div class="footer">
-            <button class="button" onclick="updateCertificate()">Generate Certificate</button>
+        
+        <div class="cert-footer" style="justify-content: center; margin-top: 2rem;">
+            <button class="btn" onclick="downloadCertificate()">
+                <i class="fas fa-download"></i> Download Certificate
+            </button>
+            <button class="btn" onclick="printCertificate()" style="margin-left: 1rem;">
+                <i class="fas fa-print"></i> Print Certificate
+            </button>
         </div>
     </div>
+    
+    <div id="noCertificates" class="no-certificates" style="display: none;">
+        <h2>🎓 No Certificates Yet</h2>
+        <p>You haven't completed any courses yet.</p>
+        <p>Complete a course to earn your first certificate!</p>
+        <a href="courses.html" class="btn" style="margin-top: 2rem;">
+            <i class="fas fa-graduation-cap"></i> Browse Courses
+        </a>
+    </div>
 
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+</footer>
+
+    <!-- Clean start and API js file links -->
+    <script src="clean-start.js"></script>
+    <script src="api.js"></script>
+    <script src="profile-updater.js"></script>
+    <script src="script.js"></script>
+    
     <script>
-        // Function to update certificate with user input
-        function updateCertificate() {
-            var name = prompt("Enter the recipient's name:", "John Doe");
-            if (name) {
-                document.getElementById("name").textContent = name;
+        let currentUser = null;
+        let completedCourses = [];
+        let currentCertificateIndex = 0;
+
+
+
+        // Load user data and certificates on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if user is logged in
+            if (!UIHelpers.isLoggedIn()) {
+                document.getElementById('certificateContent').style.display = 'none';
+                document.getElementById('loginPrompt').style.display = 'block';
+                return;
             }
 
-            var date = document.getElementById("date-input").value;
-            if (date) {
-                document.getElementById("date").textContent = date;
-            } else {
-                alert("Please select a date.");
+            try {
+                // Wait for profile updater to load user data
+                if (profileUpdater) {
+                    currentUser = profileUpdater.getCurrentUser();
+                }
+                
+                // If no user data yet, get it directly
+                if (!currentUser) {
+                    currentUser = await api.getProfile();
+                }
+                
+                // Get user's courses
+                const coursesResponse = await api.getMyCourses();
+                
+                // Filter completed courses
+                completedCourses = coursesResponse.courses.filter(course => 
+                    course.enrollment && course.enrollment.completed_at
+                );
+
+                if (completedCourses.length === 0) {
+                    document.getElementById('certificateContent').style.display = 'none';
+                    document.getElementById('noCertificates').style.display = 'block';
+                } else {
+                    displayCertificate(0);
+                    
+                    // Add navigation if multiple certificates
+                    if (completedCourses.length > 1) {
+                        addNavigationButtons();
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                UIHelpers.showMessage('Error loading certificates: ' + error.message, 'error');
+            }
+        });
+
+        function displayCertificate(index) {
+            if (index < 0 || index >= completedCourses.length) return;
+            
+            currentCertificateIndex = index;
+            const course = completedCourses[index];
+            const enrollment = course.enrollment;
+            
+            // Update certificate content
+            document.getElementById('studentName').textContent = currentUser.name;
+            document.getElementById('courseName').textContent = course.title;
+            document.getElementById('completionDate').textContent = 
+                new Date(enrollment.completed_at).toLocaleDateString();
+            document.getElementById('instructorName').textContent = 
+                course.instructor_name || 'KnowledgeNest';
+        }
+
+        function addNavigationButtons() {
+            const certificateSection = document.querySelector('section');
+            const navDiv = document.createElement('div');
+            navDiv.id = 'certificateNavigation';
+            navDiv.style.cssText = `
+                margin-top: 2rem;
+                text-align: center;
+                background: var(--white);
+                padding: 2rem;
+                border-radius: 1rem;
+                box-shadow: 0 1rem 3rem rgba(0,0,0,.1);
+                border: .3rem solid rgba(0,0,0,.2);
+            `;
+            navDiv.innerHTML = `
+                <button class="btn" onclick="previousCertificate()" style="margin-right: 1rem;">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span style="margin: 0 2rem; color: var(--black); font-size: 1.6rem; font-weight: bold;">
+                    Certificate ${currentCertificateIndex + 1} of ${completedCourses.length}
+                </span>
+                <button class="btn" onclick="nextCertificate()" style="margin-left: 1rem;">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            certificateSection.appendChild(navDiv);
+        }
+
+        function previousCertificate() {
+            if (currentCertificateIndex > 0) {
+                displayCertificate(currentCertificateIndex - 1);
+                updateNavigationButtons();
             }
         }
+
+        function nextCertificate() {
+            if (currentCertificateIndex < completedCourses.length - 1) {
+                displayCertificate(currentCertificateIndex + 1);
+                updateNavigationButtons();
+            }
+        }
+
+        function updateNavigationButtons() {
+            const navDiv = document.getElementById('certificateNavigation');
+            if (navDiv) {
+                const span = navDiv.querySelector('span');
+                if (span) {
+                    span.innerHTML = `Certificate ${currentCertificateIndex + 1} of ${completedCourses.length}`;
+                }
+            }
+        }
+
+        function downloadCertificate() {
+            // Simple download approach - create a clean version for download
+            const studentName = currentUser.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const courseName = completedCourses[currentCertificateIndex].title.replace(/[^a-zA-Z0-9]/g, '_');
+            const filename = `${studentName}_${courseName}_Certificate.html`;
+            
+            // Create certificate HTML content
+            const certificateHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certificate - ${currentUser.name}</title>
+    <style>
+        body { font-family: 'Nunito', Arial, sans-serif; margin: 0; padding: 20px; background: white; }
+        .certificate { max-width: 800px; margin: 0 auto; padding: 40px; border: 3px solid #b29628; border-radius: 15px; text-align: center; }
+        .cert-header { margin-bottom: 30px; }
+        .cert-title { font-size: 48px; color: #b29628; margin: 20px 0; }
+        .student-name { font-size: 36px; color: #b29628; font-weight: bold; margin: 20px 0; }
+        .course-name { font-size: 28px; color: #097c2a; font-weight: 600; margin: 15px 0; }
+        .cert-text { font-size: 18px; color: #888; margin: 15px 0; }
+        .cert-message { font-style: italic; color: #888; margin: 20px 0; font-size: 16px; }
+        .cert-icon { font-size: 60px; color: #f39c12; margin: 20px 0; }
+        .cert-footer { display: flex; justify-content: space-between; margin-top: 40px; }
+        .cert-footer p { font-size: 16px; color: #097c2a; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="cert-header">
+            <h1 class="cert-title">CERTIFICATE OF COMPLETION</h1>
+        </div>
+        <p class="cert-text">This is to certify that</p>
+        <h2 class="student-name">${currentUser.name}</h2>
+        <p class="cert-message">has successfully completed the course with excellence and dedication</p>
+        <h3 class="course-name">${completedCourses[currentCertificateIndex].title}</h3>
+        <div class="cert-icon">★</div>
+        <div class="cert-footer">
+            <p>Completion Date:<br>${new Date(completedCourses[currentCertificateIndex].enrollment.completed_at).toLocaleDateString()}</p>
+            <p>Instructor:<br>${completedCourses[currentCertificateIndex].instructor_name || 'KnowledgeNest'}</p>
+        </div>
+        <div style="text-align: center; margin-top: 30px; color: #888;">
+            <p>KnowledgeNest Learning Platform</p>
+        </div>
+    </div>
+</body>
+</html>`;
+            
+            // Create and download file
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            UIHelpers.showMessage('Certificate downloaded successfully!', 'success');
+        }
+
+        function printCertificate() {
+            // Hide navigation and buttons for printing
+            const navDiv = document.getElementById('certificateNavigation');
+            const buttons = document.querySelectorAll('.btn');
+            
+            if (navDiv) navDiv.style.display = 'none';
+            buttons.forEach(btn => btn.style.display = 'none');
+            
+            // Print
+            window.print();
+            
+            // Restore elements after printing
+            setTimeout(() => {
+                if (navDiv) navDiv.style.display = 'block';
+                buttons.forEach(btn => btn.style.display = 'inline-block');
+            }, 1000);
+        }
+
+        // Add print styles
+        const printStyles = `
+            @media print {
+                body {
+                    background-image: none !important;
+                    background-color: white !important;
+                }
+                .certificate {
+                    box-shadow: none !important;
+                    background: white !important;
+                    width: 100% !important;
+                    height: auto !important;
+                }
+                .button {
+                    display: none !important;
+                }
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = printStyles;
+        document.head.appendChild(styleSheet);
     </script>
 </body>
 </html>

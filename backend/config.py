@@ -11,7 +11,8 @@ class Config:
     MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or 'password'
     MYSQL_DB = os.environ.get('MYSQL_DB') or 'knowledgenest_db'
     
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}'
+    # Use SQLite for easier development
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///knowledgenest.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT config

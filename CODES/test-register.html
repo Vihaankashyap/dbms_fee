@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test - KnowledgeNest</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold;
+            color: #333;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 10px; 
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button { 
+            width: 100%;
+            padding: 15px 20px; 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result { 
+            margin-top: 20px; 
+            padding: 15px; 
+            border-radius: 5px; 
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb;
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .users-list {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .user-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 3px;
+            border-left: 4px solid #007bff;
+        }
+        h1 { color: #333; text-align: center; }
+        h3 { color: #666; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 KnowledgeNest Registration Test</h1>
+        
+        <form id="testRegisterForm">
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="password" placeholder="Enter password (min 6 characters)" required minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label>Confirm Password:</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Profile Image (Optional):</label>
+                <input type="file" id="profileImage" accept="image/*">
+            </div>
+            
+            <button type="submit">Register New User</button>
+        </form>
+        
+        <div id="result"></div>
+        
+        <h3>📋 Test Instructions:</h3>
+        <ol>
+            <li>Fill in the form with test data</li>
+            <li>Click "Register New User"</li>
+            <li>Check if registration is successful</li>
+            <li>Try logging in with the new credentials</li>
+            <li>View the updated user list below</li>
+        </ol>
+        
+        <div class="users-list">
+            <h3>👥 Current Users in Database:</h3>
+            <div id="usersList">Loading users...</div>
+            <button onclick="loadUsers()" style="width: auto; margin-top: 10px;">Refresh User List</button>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:5001/api';
+        
+        // Load users on page load
+        document.addEventListener('DOMContentLoaded', loadUsers);
+        
+        // Registration form handler
+        document.getElementById('testRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const profileImage = document.getElementById('profileImage').files[0];
+            const resultDiv = document.getElementById('result');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h4>❌ Password Mismatch</h4>
+                        <p>Passwords do not match. Please try again.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                resultDiv.innerHTML = '<div class="result">🔄 Registering user...</div>';
+                
+                // Register user
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    let message = `
+                        <div class="result success">
+                            <h4>✅ Registration Successful!</h4>
+                            <p><strong>User:</strong> ${data.user.name}</p>
+                            <p><strong>Email:</strong> ${data.user.email}</p>
+                            <p><strong>Role:</strong> ${data.user.role}</p>
+                            <p><strong>User ID:</strong> ${data.user.id}</p>
+                            <p><strong>Created:</strong> ${new Date(data.user.created_at).toLocaleString()}</p>
+                    `;
+                    
+                    // Try to upload profile image if provided
+                    if (profileImage) {
+                        try {
+                            const formData = new FormData();
+                            formData.append('file', profileImage);
+                            
+                            const uploadResponse = await fetch(`${API_BASE_URL}/upload-profile-image`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Bearer ${data.access_token}`
+                                },
+                                body: formData
+                            });
+                            
+                            if (uploadResponse.ok) {
+                                message += '<p><strong>Profile Image:</strong> ✅ Uploaded successfully</p>';
+                            } else {
+                                message += '<p><strong>Profile Image:</strong> ⚠️ Upload failed</p>';
+                            }
+                        } catch (uploadError) {
+                            message += '<p><strong>Profile Image:</strong> ⚠️ Upload error</p>';
+                        }
+                    }
+                    
+                    message += `
+                            <p style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 3px;">
+                                <strong>💡 Test Login:</strong> You can now login with<br>
+                                Email: ${data.user.email}<br>
+                                Password: ${password}
+                            </p>
+                        </div>
+                    `;
+                    
+                    resultDiv.innerHTML = message;
+                    
+                    // Clear form
+                    document.getElementById('testRegisterForm').reset();
+                    
+                    // Refresh user list
+                    setTimeout(loadUsers, 1000);
+                    
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h4>❌ Registration Failed</h4>
+                            <p><strong>Error:</strong> ${data.error || 'Unknown error'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h4>❌ Network Error</h4>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Make sure the backend server is running on port 5001</p>
+                    </div>
+                `;
+            }
+        });
+        
+        // Load users function
+        async function loadUsers() {
+            const usersDiv = document.getElementById('usersList');
+            
+            try {
+                usersDiv.innerHTML = '🔄 Loading users...';
+                
+                // This is a simple way to get users - in a real app you'd have a proper endpoint
+                const response = await fetch(`${API_BASE_URL}/analytics/overview`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token') || 'dummy'}`
+                    }
+                });
+                
+                if (response.status === 403) {
+                    usersDiv.innerHTML = `
+                        <div style="text-align: center; color: #666;">
+                            <p>👤 User list requires admin access</p>
+                            <p>Login as admin to view all users</p>
+                            <p><small>Admin: admin@knowledgenest.com / admin123</small></p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // For now, show a message about checking the database directly
+                usersDiv.innerHTML = `
+                    <div style="text-align: center; color: #666;">
+                        <p>📊 To view all users, run this command in terminal:</p>
+                        <code style="background: #f8f9fa; padding: 10px; display: block; margin: 10px 0; border-radius: 3px;">
+                            ./view_data.sh
+                        </code>
+                        <p>Or check the database directly with MySQL</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                usersDiv.innerHTML = `
+                    <div style="color: #dc3545;">
+                        <p>❌ Error loading users: ${error.message}</p>
+                        <p>Run <code>./view_data.sh</code> in terminal to see database contents</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

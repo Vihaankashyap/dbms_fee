@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Test Dynamic User - KnowledgeNest</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<header class="header">
+   
+   <section class="flex">
+
+      <a href="home.html" class="logo">KnowledgeNest</a>
+
+      <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="search-btn" class="fas fa-search"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="Guest User">
+         <h3 id="headerProfileName" class="name">Guest User</h3>
+         <p id="headerProfileRole" class="role">visitor</p>
+         <a href="profile.html" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="login.html" class="option-btn">login</a>
+            <a href="register.html" class="option-btn">register</a>
+         </div>
+      </div>
+
+   </section>
+
+</header>   
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img id="sidebarProfileImage" src="images/pic-1.jpg" class="image" alt="Guest User">
+      <h3 id="sidebarProfileName" class="name">Guest User</h3>
+      <p id="sidebarProfileRole" class="role">visitor</p>
+      <a href="profile.html" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+   </nav>
+
+</div>
+
+<section class="home-grid">
+
+   <h1 class="heading">Dynamic User Test</h1>
+
+   <div class="box-container">
+
+      <div class="box">
+         <h3>Current User Status</h3>
+         <p id="userStatus">Loading...</p>
+         <p id="userName">Loading...</p>
+         <p id="userRole">Loading...</p>
+      </div>
+
+      <div class="box">
+         <h3>Test Login</h3>
+         <form id="testLoginForm">
+            <input type="email" placeholder="Email" value="admin@knowledgenest.com" required>
+            <input type="password" placeholder="Password" value="admin123" required>
+            <button type="submit">Login</button>
+         </form>
+      </div>
+
+      <div class="box">
+         <h3>Test Register</h3>
+         <form id="testRegisterForm">
+            <input type="text" placeholder="Name" value="John Doe" required>
+            <input type="email" placeholder="Email" value="john@example.com" required>
+            <input type="password" placeholder="Password" value="password123" required>
+            <button type="submit">Register</button>
+         </form>
+      </div>
+
+      <div class="box">
+         <h3>Actions</h3>
+         <button id="logoutBtn">Logout</button>
+         <button id="refreshBtn">Refresh Profile</button>
+      </div>
+
+   </div>
+
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+</footer>
+
+<!-- custom js file link  -->
+<script src="script.js"></script>
+<script src="api.js"></script>
+<script src="profile-updater.js"></script>
+<script src="auth-helper.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for all dependencies to load
+    setTimeout(function() {
+        updateUserStatus();
+        
+        // Test login form
+        document.getElementById('testLoginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+            
+            if (authHelper) {
+                const result = await authHelper.login(email, password);
+                if (result.success) {
+                    setTimeout(updateUserStatus, 500);
+                }
+            }
+        });
+        
+        // Test register form
+        document.getElementById('testRegisterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = this.querySelector('input[type="text"]').value;
+            const email = this.querySelector('input[type="email"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+            
+            if (authHelper) {
+                const result = await authHelper.register(name, email, password);
+                if (result.success) {
+                    setTimeout(updateUserStatus, 500);
+                }
+            }
+        });
+        
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (authHelper) {
+                authHelper.logout();
+                setTimeout(updateUserStatus, 500);
+            }
+        });
+        
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            if (profileUpdater) {
+                profileUpdater.refresh();
+                setTimeout(updateUserStatus, 500);
+            }
+        });
+        
+    }, 1000);
+});
+
+function updateUserStatus() {
+    const userStatusEl = document.getElementById('userStatus');
+    const userNameEl = document.getElementById('userName');
+    const userRoleEl = document.getElementById('userRole');
+    
+    if (typeof UIHelpers !== 'undefined' && UIHelpers.isLoggedIn()) {
+        const user = UIHelpers.getCurrentUser();
+        userStatusEl.textContent = 'Logged In';
+        userNameEl.textContent = 'Name: ' + (user ? user.name : 'Unknown');
+        userRoleEl.textContent = 'Role: ' + (user ? user.role : 'Unknown');
+    } else {
+        userStatusEl.textContent = 'Not Logged In (Guest User)';
+        userNameEl.textContent = 'Name: Guest User';
+        userRoleEl.textContent = 'Role: visitor';
+    }
+}
+</script>
+
+</body>
+</html>

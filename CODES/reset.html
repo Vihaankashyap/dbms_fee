@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Auth - KnowledgeNest</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .container { max-width: 400px; margin: 0 auto; }
+        button { padding: 15px 30px; font-size: 16px; margin: 10px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Quick Auth Reset</h1>
+        <p>Click to clear authentication data and start fresh:</p>
+        <button onclick="quickReset()">Reset Now</button>
+        <button onclick="goHome()">Go to Home</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function quickReset() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                document.getElementById('status').innerHTML = '<p class="success">✅ Reset complete!</p>';
+                setTimeout(() => window.location.href = 'home.html', 1000);
+            } catch(e) {
+                document.getElementById('status').innerHTML = '<p class="error">❌ Error: ' + e.message + '</p>';
+            }
+        }
+        
+        function goHome() {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayushman Login - KnowledgeNest</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .auto-login-btn {
+            background: var(--main-color);
+            color: white;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.6rem;
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .auto-login-btn:hover {
+            background: var(--orange);
+            transform: translateY(-0.2rem);
+        }
+        
+        .credentials {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>👋 Welcome Aayushman!</h1>
+    
+    <p>Your account has been created in the database.</p>
+    
+    <div class="credentials">
+        <strong>Login Credentials:</strong><br>
+        Email: aayushman@knowledgenest.com<br>
+        Password: aayushman123
+    </div>
+    
+    <button class="auto-login-btn" onclick="autoLogin()">
+        🚀 Auto Login
+    </button>
+    
+    <button class="auto-login-btn" onclick="goToLogin()">
+        🔑 Manual Login
+    </button>
+    
+    <div id="status" style="margin-top: 1rem;"></div>
+</div>
+
+<script src="api.js"></script>
+<script src="auth-helper.js"></script>
+
+<script>
+async function autoLogin() {
+    const statusDiv = document.getElementById('status');
+    statusDiv.innerHTML = '<p>🔄 Logging in...</p>';
+    
+    try {
+        const response = await api.login({
+            email: 'aayushman@knowledgenest.com',
+            password: 'aayushman123'
+        });
+        
+        statusDiv.innerHTML = '<p style="color: green;">✅ Login successful!</p>';
+        
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 1000);
+        
+    } catch (error) {
+        statusDiv.innerHTML = `<p style="color: red;">❌ Login failed: ${error.message}</p>`;
+    }
+}
+
+function goToLogin() {
+    window.location.href = 'login.html';
+}
+</script>
+
+</body>
+</html>

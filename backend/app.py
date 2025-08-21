@@ -250,6 +250,24 @@ def login():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/check-user', methods=['POST'])
+def check_user():
+    try:
+        data = request.get_json()
+        
+        if not data or 'email' not in data:
+            return jsonify({'error': 'Email is required'}), 400
+        
+        user = User.query.filter_by(email=data['email']).first()
+        
+        return jsonify({
+            'exists': user is not None,
+            'user': user.to_dict() if user else None
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/profile', methods=['GET'])
 @jwt_required()
 def get_profile():
@@ -488,6 +506,60 @@ def get_my_courses():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/complete-course', methods=['POST'])
+@jwt_required()
+def complete_course():
+    try:
+        user_id = get_jwt_identity()
+        data = request.get_json()
+        
+        if 'course_id' not in data:
+            return jsonify({'error': 'Course ID required'}), 400
+        
+        course_id = data['course_id']
+        
+        # Find the enrollment
+        enrollment = Enrollment.query.filter_by(
+            user_id=user_id, course_id=course_id
+        ).first()
+        
+        if not enrollment:
+            return jsonify({'error': 'Not enrolled in this course'}), 404
+        
+        # Mark as completed
+        enrollment.completed_at = datetime.utcnow()
+        enrollment.progress_percentage = 100.0
+        
+        # Add rating if provided
+        if 'rating' in data and 1 <= data['rating'] <= 5:
+            enrollment.rating = data['rating']
+        
+        # Add review if provided
+        if 'review' in data:
+            enrollment.review = data['review']
+        
+        db.session.commit()
+        
+        # Log completion activity
+        user = User.query.get(user_id)
+        course = Course.query.get(course_id)
+        activity = UserActivity(
+            user_id=user_id,
+            action_type='completion',
+            description=f'User {user.name} completed {course.title}'
+        )
+        db.session.add(activity)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Course completed successfully',
+            'enrollment': enrollment.to_dict()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 # Analytics Routes
 @app.route('/api/analytics/overview', methods=['GET'])
 @jwt_required()
@@ -542,6 +614,189 @@ def get_analytics_overview():
                 'total_revenue': 0,  # Implement based on your pricing model
                 'revenue_period': 0
             }
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/analytics/users', methods=['GET'])
+@jwt_required()
+def get_users_analytics():
+    try:
+        current_user_id = get_jwt_identity()
+        user = User.query.get(current_user_id)
+        
+        if not user or user.role != 'admin':
+            return jsonify({'error': 'Admin access required'}), 403
+        
+        # Get all users with basic info
+        users = User.query.order_by(User.created_at.desc()).limit(50).all()
+        
+        users_data = []
+        for u in users:
+            users_data.append({
+                'id': u.id,
+                'name': u.name,
+                'email': u.email,
+                'role': u.role,
+                'is_active': u.is_active,
+                'created_at': u.created_at.isoformat(),
+                'profile_image': u.profile_image
+            })
+        
+        return jsonify({
+            'users': users_data,
+            'total_count': User.query.count()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/analytics/real-time', methods=['GET'])
+@jwt_required()
+def get_real_time_analytics():
+    try:
+        current_user_id = get_jwt_identity()
+        user = User.query.get(current_user_id)
+        
+        if not user or user.role != 'admin':
+            return jsonify({'error': 'Admin access required'}), 403
+        
+        # Get real-time statistics
+        total_users = User.query.count()
+        total_courses = Course.query.count()
+        total_enrollments = Enrollment.query.count()
+        
+        # Active users today
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        active_users_today = UserActivity.query.filter(
+            UserActivity.action_type == 'login',
+            UserActivity.created_at >= today
+        ).distinct(UserActivity.user_id).count()
+        
+        # Registration trends (last 7 days)
+        registration_trends = []
+        for i in range(7):
+            date = datetime.now() - timedelta(days=i)
+            start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
+            end_of_day = date.replace(hour=23, minute=59, second=59, microsecond=999999)
+            
+            daily_registrations = User.query.filter(
+                User.created_at >= start_of_day,
+                User.created_at <= end_of_day
+            ).count()
+            
+            registration_trends.append({
+                'date': date.strftime('%Y-%m-%d'),
+                'registrations': daily_registrations
+            })
+        
+        return jsonify({
+            'total_users': total_users,
+            'total_courses': total_courses,
+            'total_enrollments': total_enrollments,
+            'active_users_today': active_users_today,
+            'registration_trends': list(reversed(registration_trends)),
+            'timestamp': datetime.now().isoformat()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/analytics/course-progress', methods=['GET'])
+@jwt_required()
+def get_course_progress_analytics():
+    try:
+        current_user_id = get_jwt_identity()
+        user = User.query.get(current_user_id)
+        
+        if not user or user.role != 'admin':
+            return jsonify({'error': 'Admin access required'}), 403
+        
+        # Get course progress data
+        courses = Course.query.filter_by(is_published=True).all()
+        course_progress_data = []
+        
+        for course in courses:
+            # Get enrollments for this course
+            enrollments = Enrollment.query.filter_by(course_id=course.id).all()
+            
+            if not enrollments:
+                continue
+                
+            total_enrollments = len(enrollments)
+            completed_enrollments = len([e for e in enrollments if e.completed_at])
+            
+            # Calculate average progress
+            total_progress = sum(e.progress_percentage for e in enrollments)
+            avg_progress = total_progress / total_enrollments if total_enrollments > 0 else 0
+            
+            # Get recent progress updates (last 24 hours)
+            yesterday = datetime.now() - timedelta(days=1)
+            recent_updates = [e for e in enrollments if e.updated_at and e.updated_at >= yesterday]
+            
+            # Calculate completion rate
+            completion_rate = (completed_enrollments / total_enrollments * 100) if total_enrollments > 0 else 0
+            
+            course_progress_data.append({
+                'course_id': course.id,
+                'course_title': course.title,
+                'total_enrollments': total_enrollments,
+                'completed_enrollments': completed_enrollments,
+                'avg_progress': round(avg_progress, 1),
+                'completion_rate': round(completion_rate, 1),
+                'recent_updates': len(recent_updates),
+                'instructor': course.instructor.name if course.instructor else 'Unknown'
+            })
+        
+        # Sort by total enrollments (most popular first)
+        course_progress_data.sort(key=lambda x: x['total_enrollments'], reverse=True)
+        
+        return jsonify({
+            'courses': course_progress_data,
+            'total_courses': len(course_progress_data)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/analytics/progress-trends', methods=['GET'])
+@jwt_required()
+def get_progress_trends():
+    try:
+        current_user_id = get_jwt_identity()
+        user = User.query.get(current_user_id)
+        
+        if not user or user.role != 'admin':
+            return jsonify({'error': 'Admin access required'}), 403
+        
+        # Get progress trends for the last 7 days
+        progress_trends = []
+        for i in range(7):
+            date = datetime.now() - timedelta(days=i)
+            start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
+            end_of_day = date.replace(hour=23, minute=59, second=59, microsecond=999999)
+            
+            # Count enrollments for this day
+            daily_enrollments = Enrollment.query.filter(
+                Enrollment.enrolled_at >= start_of_day,
+                Enrollment.enrolled_at <= end_of_day
+            ).count()
+            
+            # Count completions for this day
+            daily_completions = Enrollment.query.filter(
+                Enrollment.completed_at >= start_of_day,
+                Enrollment.completed_at <= end_of_day
+            ).count()
+            
+            progress_trends.append({
+                'date': date.strftime('%Y-%m-%d'),
+                'enrollments': daily_enrollments,
+                'completions': daily_completions
+            })
+        
+        return jsonify({
+            'trends': list(reversed(progress_trends))
         }), 200
         
     except Exception as e:
@@ -618,4 +873,5 @@ def create_tables():
             db.session.commit()
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    create_tables()
+    app.run(debug=True, host='0.0.0.0', port=5004)

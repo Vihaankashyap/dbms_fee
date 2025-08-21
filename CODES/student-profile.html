@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Student Profile - KnowledgeNest</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="auth-styles.css">
+   
+   <style>
+      .student-dashboard {
+         padding: 2rem;
+         max-width: 1200px;
+         margin: 0 auto;
+      }
+      
+      .profile-header {
+         background: linear-gradient(135deg, var(--main-color), var(--orange));
+         border-radius: 1rem;
+         padding: 3rem;
+         text-align: center;
+         color: white;
+         margin-bottom: 2rem;
+         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+      }
+      
+      .profile-avatar {
+         width: 120px;
+         height: 120px;
+         border-radius: 50%;
+         border: 4px solid white;
+         margin: 0 auto 1rem;
+         object-fit: cover;
+         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+      }
+      
+      .stats-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+         gap: 2rem;
+         margin-bottom: 3rem;
+      }
+      
+      .stat-card {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         text-align: center;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+         transition: transform 0.3s ease;
+      }
+      
+      .stat-card:hover {
+         transform: translateY(-0.3rem);
+      }
+      
+      .stat-icon {
+         font-size: 3rem;
+         color: var(--main-color);
+         margin-bottom: 1rem;
+      }
+      
+      .stat-number {
+         font-size: 2.5rem;
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 0.5rem;
+      }
+      
+      .stat-label {
+         color: var(--light-color);
+         font-size: 1.4rem;
+      }
+      
+      .section-title {
+         font-size: 2.2rem;
+         color: var(--black);
+         margin-bottom: 2rem;
+         border-bottom: 0.2rem solid var(--main-color);
+         padding-bottom: 1rem;
+      }
+      
+      .course-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+         gap: 2rem;
+         margin-bottom: 3rem;
+      }
+      
+      .course-card {
+         background: var(--white);
+         border-radius: 1rem;
+         overflow: hidden;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+         transition: transform 0.3s ease;
+      }
+      
+      .course-card:hover {
+         transform: translateY(-0.3rem);
+      }
+      
+      .course-thumbnail {
+         width: 100%;
+         height: 200px;
+         object-fit: cover;
+      }
+      
+      .course-content {
+         padding: 1.5rem;
+      }
+      
+      .course-title {
+         font-size: 1.6rem;
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 1rem;
+      }
+      
+      .progress-bar {
+         width: 100%;
+         height: 0.8rem;
+         background: var(--light-color);
+         border-radius: 0.4rem;
+         overflow: hidden;
+         margin-bottom: 1rem;
+      }
+      
+      .progress-fill {
+         height: 100%;
+         background: linear-gradient(90deg, var(--main-color), var(--orange));
+         border-radius: 0.4rem;
+         transition: width 0.3s ease;
+      }
+      
+      .progress-text {
+         font-size: 1.2rem;
+         color: var(--light-color);
+         margin-bottom: 1rem;
+      }
+      
+      .achievement-badge {
+         display: inline-block;
+         background: var(--orange);
+         color: white;
+         padding: 0.5rem 1rem;
+         border-radius: 2rem;
+         font-size: 1.2rem;
+         margin: 0.2rem;
+      }
+      
+      .recent-activity {
+         background: var(--white);
+         border-radius: 1rem;
+         padding: 2rem;
+         box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+         border: 0.1rem solid var(--light-color);
+      }
+      
+      .activity-item {
+         display: flex;
+         align-items: center;
+         padding: 1rem 0;
+         border-bottom: 0.1rem solid var(--light-color);
+      }
+      
+      .activity-item:last-child {
+         border-bottom: none;
+      }
+      
+      .activity-icon {
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         background: var(--main-color);
+         color: white;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin-right: 1rem;
+      }
+      
+      .activity-content {
+         flex: 1;
+      }
+      
+      .activity-title {
+         font-weight: bold;
+         color: var(--black);
+         margin-bottom: 0.3rem;
+      }
+      
+      .activity-time {
+         font-size: 1.2rem;
+         color: var(--light-color);
+      }
+      
+      .edit-profile-btn {
+         position: fixed;
+         bottom: 2rem;
+         right: 2rem;
+         width: 60px;
+         height: 60px;
+         border-radius: 50%;
+         background: var(--main-color);
+         color: white;
+         border: none;
+         font-size: 1.8rem;
+         cursor: pointer;
+         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+         transition: all 0.3s ease;
+      }
+      
+      .edit-profile-btn:hover {
+         transform: scale(1.1);
+         background: var(--orange);
+      }
+      
+      @media (max-width: 768px) {
+         .student-dashboard {
+            padding: 1rem;
+         }
+         
+         .profile-header {
+            padding: 2rem;
+         }
+         
+         .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+         }
+         
+         .course-grid {
+            grid-template-columns: 1fr;
+         }
+      }
+   </style>
+</head>
+<body>
+
+<header class="header">
+   <section class="flex">
+      <a href="home.html" class="logo">KnowledgeNest</a>
+      <img src="images/logo-1.jpeg" alt="Logo" style="height: 95px; width: 95px; max-width: 100%; border-radius: 50%; object-fit: cover;">
+
+      <form action="search.html" method="post" class="search-form">
+         <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
+         <button type="submit" class="fas fa-search"></button>
+      </form>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="search-btn" class="fas fa-search"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img id="headerProfileImage" src="images/pic-1.jpg" class="image" alt="Student">
+         <h3 id="headerProfileName" class="name">Student</h3>
+         <p id="headerProfileRole" class="role">student</p>
+         <a href="student-profile.html" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="profile.html" class="option-btn">edit profile</a>
+            <a href="#" class="option-btn" onclick="AuthHelper.logout()">logout</a>
+         </div>
+      </div>
+   </section>
+</header>   
+
+<div class="side-bar">
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img src="images/pic-1.jpg" class="image" alt="Student">
+      <h3 class="name">Student</h3>
+      <p class="role">student</p>
+      <a href="student-profile.html" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+      <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+      <a href="about.html"><i class="fas fa-question"></i><span>about</span></a>
+      <a href="courses.html"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
+      <a href="teachers.html"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+      <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a>
+   </nav>
+</div>
+
+<section class="student-dashboard">
+   <!-- Profile Header -->
+   <div class="profile-header">
+      <img id="profileAvatar" src="images/pic-1.jpg" alt="Student Avatar" class="profile-avatar">
+      <h2 id="studentName">Alex Johnson</h2>
+      <p id="studentEmail">alex.johnson@example.com</p>
+      <p>Computer Science Student | Member since January 2024</p>
+   </div>
+
+   <!-- Statistics Grid -->
+   <div class="stats-grid">
+      <div class="stat-card">
+         <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+         </div>
+         <div class="stat-number" id="enrolledCourses">8</div>
+         <div class="stat-label">Enrolled Courses</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-icon">
+            <i class="fas fa-trophy"></i>
+         </div>
+         <div class="stat-number" id="completedCourses">3</div>
+         <div class="stat-label">Completed Courses</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+         </div>
+         <div class="stat-number" id="studyHours">127</div>
+         <div class="stat-label">Study Hours</div>
+      </div>
+      
+      <div class="stat-card">
+         <div class="stat-icon">
+            <i class="fas fa-star"></i>
+         </div>
+         <div class="stat-number" id="averageRating">4.8</div>
+         <div class="stat-label">Average Rating</div>
+      </div>
+   </div>
+
+   <!-- Current Courses -->
+   <h3 class="section-title">Current Courses</h3>
+   <div class="course-grid" id="currentCourses">
+      <div class="course-card">
+         <img src="https://via.placeholder.com/300x200/4CAF50/white?text=Web+Development" alt="Course" class="course-thumbnail">
+         <div class="course-content">
+            <h4 class="course-title">Complete Web Development Bootcamp</h4>
+            <div class="progress-bar">
+               <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+            <p class="progress-text">Progress: 75% Complete</p>
+            <a href="#" class="inline-btn">Continue Learning</a>
+         </div>
+      </div>
+      
+      <div class="course-card">
+         <img src="https://via.placeholder.com/300x200/2196F3/white?text=JavaScript" alt="Course" class="course-thumbnail">
+         <div class="course-content">
+            <h4 class="course-title">JavaScript Mastery Course</h4>
+            <div class="progress-bar">
+               <div class="progress-fill" style="width: 45%;"></div>
+            </div>
+            <p class="progress-text">Progress: 45% Complete</p>
+            <a href="#" class="inline-btn">Continue Learning</a>
+         </div>
+      </div>
+      
+      <div class="course-card">
+         <img src="https://via.placeholder.com/300x200/FF9800/white?text=Python" alt="Course" class="course-thumbnail">
+         <div class="course-content">
+            <h4 class="course-title">Python for Data Science</h4>
+            <div class="progress-bar">
+               <div class="progress-fill" style="width: 20%;"></div>
+            </div>
+            <p class="progress-text">Progress: 20% Complete</p>
+            <a href="#" class="inline-btn">Continue Learning</a>
+         </div>
+      </div>
+   </div>
+
+   <!-- Achievements -->
+   <h3 class="section-title">Achievements</h3>
+   <div style="margin-bottom: 3rem;">
+      <span class="achievement-badge"><i class="fas fa-medal"></i> First Course Completed</span>
+      <span class="achievement-badge"><i class="fas fa-fire"></i> 7-Day Streak</span>
+      <span class="achievement-badge"><i class="fas fa-star"></i> Top Performer</span>
+      <span class="achievement-badge"><i class="fas fa-users"></i> Community Helper</span>
+   </div>
+
+   <!-- Recent Activity -->
+   <h3 class="section-title">Recent Activity</h3>
+   <div class="recent-activity">
+      <div class="activity-item">
+         <div class="activity-icon">
+            <i class="fas fa-play"></i>
+         </div>
+         <div class="activity-content">
+            <div class="activity-title">Completed lesson: "Advanced CSS Flexbox"</div>
+            <div class="activity-time">2 hours ago</div>
+         </div>
+      </div>
+      
+      <div class="activity-item">
+         <div class="activity-icon">
+            <i class="fas fa-trophy"></i>
+         </div>
+         <div class="activity-content">
+            <div class="activity-title">Earned achievement: "JavaScript Ninja"</div>
+            <div class="activity-time">1 day ago</div>
+         </div>
+      </div>
+      
+      <div class="activity-item">
+         <div class="activity-icon">
+            <i class="fas fa-graduation-cap"></i>
+         </div>
+         <div class="activity-content">
+            <div class="activity-title">Enrolled in "Python for Data Science"</div>
+            <div class="activity-time">3 days ago</div>
+         </div>
+      </div>
+      
+      <div class="activity-item">
+         <div class="activity-icon">
+            <i class="fas fa-star"></i>
+         </div>
+         <div class="activity-content">
+            <div class="activity-title">Rated course: "Web Development Bootcamp" - 5 stars</div>
+            <div class="activity-time">1 week ago</div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<!-- Floating Edit Button -->
+<button class="edit-profile-btn" onclick="window.location.href='profile.html'" title="Edit Profile">
+   <i class="fas fa-edit"></i>
+</button>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by <span>KnowledgeNest</span> | all rights reserved!
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js"></script>
+<script src="auth-helper.js"></script>
+<script src="profile-updater.js"></script>
+
+<script>
+// Student Profile functionality
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = UIHelpers.getCurrentUser();
+    const isLoggedIn = UIHelpers.isLoggedIn();
+    
+    if (!isLoggedIn || !user) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Populate student data
+    populateStudentProfile(user);
+    
+    // Try to load additional data from API
+    try {
+        await loadStudentDashboardData();
+    } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+    }
+});
+
+function populateStudentProfile(user) {
+    // Update profile header
+    document.getElementById('profileAvatar').src = user.profile_image || 'images/pic-1.jpg';
+    document.getElementById('studentName').textContent = user.name || 'Student';
+    document.getElementById('studentEmail').textContent = user.email || '';
+    
+    // Update header and sidebar
+    const headerImage = document.getElementById('headerProfileImage');
+    const headerName = document.getElementById('headerProfileName');
+    
+    if (headerImage) headerImage.src = user.profile_image || 'images/pic-1.jpg';
+    if (headerName) headerName.textContent = user.name || 'Student';
+    
+    // Update sidebar
+    const sidebarImages = document.querySelectorAll('.side-bar .profile .image');
+    const sidebarNames = document.querySelectorAll('.side-bar .profile .name');
+    
+    sidebarImages.forEach(img => img.src = user.profile_image || 'images/pic-1.jpg');
+    sidebarNames.forEach(name => name.textContent = user.name || 'Student');
+}
+
+async function loadStudentDashboardData() {
+    try {
+        // Load enrolled courses
+        const courses = await api.getMyCourses();
+        updateCourseStats(courses);
+        
+        // Load recent activity
+        const activity = await api.getRecentActivity();
+        updateRecentActivity(activity);
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        // Use mock data if API fails
+        useMockData();
+    }
+}
+
+function updateCourseStats(courses) {
+    if (courses && courses.length > 0) {
+        document.getElementById('enrolledCourses').textContent = courses.length;
+        
+        const completed = courses.filter(course => course.progress_percentage >= 100).length;
+        document.getElementById('completedCourses').textContent = completed;
+        
+        const totalHours = courses.reduce((sum, course) => sum + (course.duration_hours || 0), 0);
+        document.getElementById('studyHours').textContent = totalHours;
+        
+        const avgRating = courses.reduce((sum, course) => sum + (course.rating || 0), 0) / courses.length;
+        document.getElementById('averageRating').textContent = avgRating.toFixed(1);
+    }
+}
+
+function updateRecentActivity(activities) {
+    if (activities && activities.length > 0) {
+        const activityContainer = document.querySelector('.recent-activity');
+        activityContainer.innerHTML = '<h3 class="section-title">Recent Activity</h3>';
+        
+        activities.forEach(activity => {
+            const activityItem = createActivityItem(activity);
+            activityContainer.appendChild(activityItem);
+        });
+    }
+}
+
+function createActivityItem(activity) {
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    
+    const icon = getActivityIcon(activity.action_type);
+    const timeAgo = formatTimeAgo(activity.created_at);
+    
+    item.innerHTML = `
+        <div class="activity-icon">
+            <i class="${icon}"></i>
+        </div>
+        <div class="activity-content">
+            <div class="activity-title">${activity.description}</div>
+            <div class="activity-time">${timeAgo}</div>
+        </div>
+    `;
+    
+    return item;
+}
+
+function getActivityIcon(actionType) {
+    const icons = {
+        'login': 'fas fa-sign-in-alt',
+        'enrollment': 'fas fa-graduation-cap',
+        'completion': 'fas fa-trophy',
+        'rating': 'fas fa-star'
+    };
+    return icons[actionType] || 'fas fa-circle';
+}
+
+function formatTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    
+    return date.toLocaleDateString();
+}
+
+function useMockData() {
+    // Use the default mock data already in the HTML
+    console.log('Using mock data for student profile');
+}
+
+// Add smooth scrolling for internal links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
